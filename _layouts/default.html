@@ -24,22 +24,10 @@
       font-family: 'Pretendard', sans-serif !important; margin: 0; padding: 0;
     }
     
-    /* ⭐️ 1. 전체 레이아웃 (사이드바를 더 옆으로 밀기 위해 최대 넓이를 1300px로 확장) */
-    .page-wrapper { 
-      display: flex; gap: 50px; /* 사이드바와 본문 사이 간격 대폭 확장 */
-      max-width: 1300px; 
-      margin: 40px auto; padding: 0 30px; align-items: flex-start; justify-content: center;
-    }
-    
-    /* 사이드바 크기 고정 */
+    .page-wrapper { display: flex; gap: 50px; max-width: 1300px; margin: 40px auto; padding: 0 30px; align-items: flex-start; justify-content: center; }
     .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
-    
-    /* ⭐️ 2. 메인 본문 영역 (예전 느낌 그대로 900px 제한) */
-    .main-content { 
-      flex: 1; min-width: 0; max-width: 900px; /* 너무 퍼지지 않게 예전 크기로 꽉 잡아줌 */
-    }
+    .main-content { flex: 1; min-width: 0; max-width: 900px; }
 
-    /* 본문 카드 디자인 (예전 느낌 100% 복구) */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -137,10 +125,31 @@
     .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
     .category-list a:hover { color: #3182F6; }
 
+    /* === 모바일 햄버거 메뉴 및 슬라이드 사이드바 === */
+    .hamburger-btn { display: none; background: #3182F6; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.2s; }
+    .hamburger-btn:hover { background: #5C9DFF; }
+    
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 10000; opacity: 0; transition: opacity 0.3s ease; }
+    .sidebar-overlay.show { display: block; opacity: 1; }
+
     @media screen and (max-width: 900px) {
       .page-wrapper { flex-direction: column; margin: 10px auto; padding: 0 15px;}
-      .sidebar-wrapper { width: 100%; position: static; }
-      .main-content { max-width: 100%; }
+      .main-content { max-width: 100%; width: 100%; }
+      
+      /* 모바일에서 햄버거 버튼 보이기 */
+      .hamburger-btn { display: inline-block; }
+      
+      /* 사이드바를 화면 밖으로 숨김 */
+      .sidebar-wrapper {
+        position: fixed; top: 0; left: -320px; width: 280px; height: 100vh;
+        background: linear-gradient(145deg, #151619 0%, #0a0b0d 100%);
+        z-index: 10001; padding: 20px; overflow-y: auto; margin: 0;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+      }
+      /* 메뉴 열렸을 때 튀어나오기 */
+      .sidebar-wrapper.open { left: 0; }
+
       .post-outer-container { padding: 25px 20px; border-radius: 16px; }
       h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
       .post-body h2 { font-size: 1.3em; margin-top: 2em; }
@@ -161,7 +170,7 @@
       <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="profile-img" alt="profile">
       <h3 class="profile-name">Eugene Kang</h3>
       <p class="profile-desc">Korea University Mathematics<br>Advanced Mathematics, Linux Mint, Obsidian</p>
-      <a href="{{ site.baseurl }}/about.html" class="visit-profile">About Me</a>
+      <a href="/collagemathsite/about.html" class="visit-profile">About Me</a>
     </div>
 
     <div class="widget">
@@ -169,23 +178,26 @@
       <ul class="category-list">
         {% assign categories = "" | split: "" %}
         {% for page in site.pages %}
-          {% if page.dir != "/" and page.dir != "/assets/" and page.dir != "/css/" %}
+          {% unless page.dir == "/" or page.dir contains "/assets/" or page.dir contains "/css/" %}
             {% assign categories = categories | push: page.dir %}
-          {% endif %}
+          {% endunless %}
         {% endfor %}
         {% assign unique_categories = categories | uniq %}
         
         {% for category in unique_categories %}
           {% assign cat_name = category | replace: "/", "" | capitalize %}
-          <li><a href="{{ site.baseurl }}{{ category }}">{{ cat_name }}</a></li>
+          <li><a href="/collagemathsite{{ category }}">{{ cat_name }}</a></li>
         {% endfor %}
       </ul>
     </div>
   </aside>
 
   <main class="main-content">
+    
+    <button id="sidebar-toggle-btn" class="hamburger-btn">☰ 메뉴</button>
+
     <div class="post-outer-container">
-      <a href="{{ site.baseurl }}/" class="site-title">fr0mhell's math stash</a>
+      <a href="/collagemathsite/" class="site-title">fr0mhell's math stash</a>
       <h1 class="post-title">{{ page.title }}</h1>
       
       <div class="post-body">
@@ -217,6 +229,25 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+
+  // ⭐️ 햄버거 메뉴 및 배경 딤(Dim) 처리 로직
+  const sidebar = document.querySelector('.sidebar-wrapper');
+  const toggleBtn = document.getElementById('sidebar-toggle-btn');
+  const overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+  document.body.appendChild(overlay);
+
+  if(toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    });
+  }
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  });
+
   const postBody = document.querySelector('.post-body');
   if (!postBody) return;
 
