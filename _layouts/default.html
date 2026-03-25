@@ -24,10 +24,27 @@
       font-family: 'Pretendard', sans-serif !important; margin: 0; padding: 0;
     }
     
-    .page-wrapper { display: flex; gap: 50px; max-width: 1300px; margin: 40px auto; padding: 0 30px; align-items: flex-start; justify-content: center; }
-    .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
-    .main-content { flex: 1; min-width: 0; max-width: 900px; }
+    /* ⭐️ PC/모바일 통합: 화면 중앙 정렬 및 햄버거 메뉴 디자인 */
+    .page-wrapper { display: flex; justify-content: center; max-width: 100%; margin: 40px auto; padding: 0 30px; }
+    .main-content { flex: 1; min-width: 0; max-width: 900px; width: 100%; }
 
+    .hamburger-btn { display: inline-block; background: #3182F6; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.2s; }
+    .hamburger-btn:hover { background: #5C9DFF; }
+    
+    /* ⭐️ 사이드바는 무조건 화면 밖으로 숨김 */
+    .sidebar-wrapper {
+      position: fixed; top: 0; left: -320px; width: 280px; height: 100vh;
+      background: linear-gradient(145deg, #151619 0%, #0a0b0d 100%);
+      z-index: 10001; padding: 20px; overflow-y: auto; margin: 0;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+    .sidebar-wrapper.open { left: 0; }
+
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 10000; opacity: 0; transition: opacity 0.3s ease; }
+    .sidebar-overlay.show { display: block; opacity: 1; }
+
+    /* 본문 카드 디자인 */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -125,31 +142,9 @@
     .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
     .category-list a:hover { color: #3182F6; }
 
-    /* === 모바일 햄버거 메뉴 및 슬라이드 사이드바 === */
-    .hamburger-btn { display: none; background: #3182F6; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.2s; }
-    .hamburger-btn:hover { background: #5C9DFF; }
-    
-    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 10000; opacity: 0; transition: opacity 0.3s ease; }
-    .sidebar-overlay.show { display: block; opacity: 1; }
-
+    /* 모바일 세부 최적화 */
     @media screen and (max-width: 900px) {
-      .page-wrapper { flex-direction: column; margin: 10px auto; padding: 0 15px;}
-      .main-content { max-width: 100%; width: 100%; }
-      
-      /* 모바일에서 햄버거 버튼 보이기 */
-      .hamburger-btn { display: inline-block; }
-      
-      /* 사이드바를 화면 밖으로 숨김 */
-      .sidebar-wrapper {
-        position: fixed; top: 0; left: -320px; width: 280px; height: 100vh;
-        background: linear-gradient(145deg, #151619 0%, #0a0b0d 100%);
-        z-index: 10001; padding: 20px; overflow-y: auto; margin: 0;
-        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 4px 0 24px rgba(0,0,0,0.5);
-      }
-      /* 메뉴 열렸을 때 튀어나오기 */
-      .sidebar-wrapper.open { left: 0; }
-
+      .page-wrapper { margin: 10px auto; padding: 0 15px;}
       .post-outer-container { padding: 25px 20px; border-radius: 16px; }
       h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
       .post-body h2 { font-size: 1.3em; margin-top: 2em; }
@@ -230,7 +225,18 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-  // ⭐️ 햄버거 메뉴 및 배경 딤(Dim) 처리 로직
+  // ⭐️ 1. 마크다운 링크(.md)를 .html로 자동 치환 로직 (옵시디언 호환성 완벽 해결)
+  const allLinks = document.querySelectorAll('.post-body a');
+  allLinks.forEach(link => {
+    let href = link.getAttribute('href');
+    if (href) {
+      // .md 로 끝나거나 .md#목차 처럼 앵커가 붙어있는 경우 모두 .html로 바꿈
+      href = href.replace(/\.md($|#)/, '.html$1');
+      link.setAttribute('href', href);
+    }
+  });
+
+  // ⭐️ 2. 햄버거 메뉴 및 배경 딤(Dim) 처리 로직
   const sidebar = document.querySelector('.sidebar-wrapper');
   const toggleBtn = document.getElementById('sidebar-toggle-btn');
   const overlay = document.createElement('div');
@@ -248,6 +254,7 @@ document.addEventListener("DOMContentLoaded", function() {
     overlay.classList.remove('show');
   });
 
+  // 3. 섹션 접기/펴기 로직
   const postBody = document.querySelector('.post-body');
   if (!postBody) return;
 
@@ -300,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   setTimeout(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); }, 1000);
 
+  // 4. 플로팅 목차(ToC) 로직
   if (toggleHeadings.length > 0) {
     const wrapper = document.createElement('div');
     wrapper.id = 'toc-wrapper';
@@ -402,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function() {
     header.querySelector('.toc-reset-btn').onclick = resetPos;
   }
 
+  // 5. 모바일 팝업 각주 로직
   const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
   footnoteRefs.forEach(ref => {
     ref.addEventListener('click', e => {
