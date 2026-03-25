@@ -24,6 +24,22 @@
       font-family: 'Pretendard', sans-serif !important; margin: 0; padding: 0;
     }
     
+    /* ⭐️ 1. 전체 레이아웃 (사이드바를 더 옆으로 밀기 위해 최대 넓이를 1300px로 확장) */
+    .page-wrapper { 
+      display: flex; gap: 50px; /* 사이드바와 본문 사이 간격 대폭 확장 */
+      max-width: 1300px; 
+      margin: 40px auto; padding: 0 30px; align-items: flex-start; justify-content: center;
+    }
+    
+    /* 사이드바 크기 고정 */
+    .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
+    
+    /* ⭐️ 2. 메인 본문 영역 (예전 느낌 그대로 900px 제한) */
+    .main-content { 
+      flex: 1; min-width: 0; max-width: 900px; /* 너무 퍼지지 않게 예전 크기로 꽉 잡아줌 */
+    }
+
+    /* 본문 카드 디자인 (예전 느낌 100% 복구) */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -48,7 +64,6 @@
     .MathJax_SVG_Display { display: block !important; margin: 1.5em auto !important; text-align: center !important; width: 100% !important; }
     .post-body svg, .MathJax_SVG { pointer-events: none !important; }
 
-    /* 옵시디언 중복 수식 가림막 */
     .math.inline > math, .math.display > math { display: none !important; }
     .katex-mathml { display: none !important; }
     span.math.display > span.math.inline { display: block; }
@@ -102,10 +117,6 @@
     .interaction-box { background: linear-gradient(145deg, #18191d 0%, #121316 100%); border-radius: 16px; padding: 24px; margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.05); }
     .interaction-box h3 { margin-top: 0; font-size: 1.2em; color: #F2F4F6;}
 
-    .page-wrapper { display: flex; gap: 30px; max-width: 1100px; margin: 40px auto; padding: 0 20px; align-items: flex-start; }
-    .main-content { flex: 1; min-width: 0; }
-    .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
-
     .widget {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -126,9 +137,10 @@
     .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
     .category-list a:hover { color: #3182F6; }
 
-    @media screen and (max-width: 800px) {
-      .page-wrapper { flex-direction: column; margin: 10px auto; }
+    @media screen and (max-width: 900px) {
+      .page-wrapper { flex-direction: column; margin: 10px auto; padding: 0 15px;}
       .sidebar-wrapper { width: 100%; position: static; }
+      .main-content { max-width: 100%; }
       .post-outer-container { padding: 25px 20px; border-radius: 16px; }
       h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
       .post-body h2 { font-size: 1.3em; margin-top: 2em; }
@@ -182,15 +194,21 @@
 
       <div class="interaction-box">
         <h3>💬 토론 및 댓글</h3>
-        <div id="cusdis_thread"
-          data-host="https://cusdis.com"
-          data-app-id="YOUR_APP_ID"
-          data-page-id="{{ page.url }}"
-          data-page-url="{{ site.url }}{{ site.baseurl }}{{ page.url }}"
-          data-page-title="{{ page.title }}"
-          data-theme="dark">
-        </div>
-        <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+        <script src="https://giscus.app/client.js"
+        data-repo="fr0mhe11/collagemathsite"
+        data-repo-id="R_kgDORwtcXQ"
+        data-category="General"
+        data-category-id="DIC_kwDORwtcXc4C5Rvp"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark_dimmed"
+        data-lang="ko"
+        crossorigin="anonymous"
+        async>
+        </script>
       </div>
     </div>
   </main>
