@@ -24,7 +24,6 @@
       font-family: 'Pretendard', sans-serif !important; margin: 0; padding: 0;
     }
     
-    /* === 메인 카드 박스 === */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -34,7 +33,6 @@
     .site-title { color: #3182F6; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; text-decoration: none;}
     h1.post-title { font-size: 2em; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;}
 
-    /* === 본문 텍스트 및 헤딩 === */
     .post-body { line-height: 1.65; font-size: 16px; color: #E5E8EB; word-break: keep-all; }
     .post-body h2, .post-body h3, .post-body h4 { font-weight: 700; color: #F2F4F6; margin-top: 2.5em; margin-bottom: 0.8em; position: relative; padding-left: 20px; cursor: pointer; scroll-margin-top: 80px;}
     .post-body h2 { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.4em; }
@@ -45,18 +43,16 @@
     .post-body code { background: rgba(255, 255, 255, 0.06); padding: 0.2em 0.4em; border-radius: 6px; font-family: monospace; }
     .post-body pre code { background: transparent; padding: 0; }
     
-    /* === 강력한 수식 숨김 처리 및 잔상 제거 === */
     .MathJax_Preview { display: none !important; color: transparent !important; }
     .MJX_Assistive_MathML { display: none !important; }
     .MathJax_SVG_Display { display: block !important; margin: 1.5em auto !important; text-align: center !important; width: 100% !important; }
     .post-body svg, .MathJax_SVG { pointer-events: none !important; }
 
-    /* ⭐️ 옵시디언/Pandoc 변환 시 딸려온 중복 수식(MathML 등) 강제 숨김 */
+    /* 옵시디언 중복 수식 가림막 */
     .math.inline > math, .math.display > math { display: none !important; }
     .katex-mathml { display: none !important; }
     span.math.display > span.math.inline { display: block; }
 
-    /* === 자동 넘버링 및 접기 아이콘 === */
     .post-body { counter-reset: h2-count; }
     .post-body h2 { counter-reset: h3-count; }
     .post-body h2::before { counter-increment: h2-count; content: counter(h2-count) ". "; color: #3182F6; margin-right: 6px; }
@@ -65,7 +61,6 @@
     .heading-collapsed .section-toggle-icon { transform: translateY(-50%) rotate(-90deg); color: #B0B8C1; }
     .hidden-section-content { display: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; border: none !important; visibility: hidden !important;}
 
-    /* === 드래그 가능한 플로팅 목차 (ToC) === */
     #toc-wrapper {
       position: fixed; top: 80px; right: 30px; width: 300px; max-width: 85vw; max-height: 80vh;
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.8) 0%, rgba(23, 24, 28, 0.85) 100%);
@@ -73,11 +68,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); z-index: 10000; display: flex; flex-direction: column; 
       transition: width 0.3s, height 0.3s, border-radius 0.3s, background 0.3s;
     }
-    #toc-wrapper.folded { 
-      width: 46px; height: 46px; border-radius: 23px; overflow: hidden; 
-      top: auto !important; bottom: 30px !important; right: 30px !important; left: auto !important;
-      transform: none !important; background: rgba(30, 31, 36, 0.3) !important; 
-    }
+    #toc-wrapper.folded { width: 46px; height: 46px; border-radius: 23px; overflow: hidden; top: auto !important; bottom: 30px !important; right: 30px !important; left: auto !important; transform: none !important; background: rgba(30, 31, 36, 0.3) !important; }
     .toc-header { padding: 12px 16px; cursor: grab; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); user-select: none; min-height: 50px; box-sizing: border-box;}
     .toc-header:active { cursor: grabbing; }
     .toc-title { font-weight: 700; color: #F2F4F6; font-size: 1.05em; pointer-events: none; }
@@ -91,13 +82,11 @@
     .toc-body a { color: #B0B8C1 !important; font-size: 0.9em; transition: color 0.2s ease; text-decoration: none; display: block; }
     .toc-body a:hover { color: #3182F6 !important; }
     .toc-body a::before { content: counters(toc-item, ".") ". "; color: #3182F6; margin-right: 6px; font-weight: 600; }
-    
     #toc-wrapper.folded .toc-header { border-bottom: none; padding: 0; justify-content: center; width: 100%; height: 100%; }
     #toc-wrapper.folded .toc-title, #toc-wrapper.folded .toc-reset-btn, #toc-wrapper.folded .toc-body { display: none; }
     #toc-wrapper.folded .toc-header-btns { gap: 0; width: 100%; height: 100%; justify-content: center; }
     #toc-wrapper.folded .toc-toggle-btn { color: #B0B8C1; font-size: 1.5em; width: 100%; height: 100%; padding: 0; }
 
-    /* === 모바일 팝업 각주 === */
     .floating-footnote-content {
       position: absolute; width: fit-content; min-width: 150px; max-width: calc(100vw - 30px); 
       background: linear-gradient(145deg, #202227 0%, #18191d 100%);
@@ -110,16 +99,13 @@
     @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateX(-10px); } to { opacity: 1; transform: scale(1) translateX(0); } }
     .footnotes { display: none !important; }
 
-    /* === 인터랙션 (댓글/구독) 박스 === */
     .interaction-box { background: linear-gradient(145deg, #18191d 0%, #121316 100%); border-radius: 16px; padding: 24px; margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.05); }
     .interaction-box h3 { margin-top: 0; font-size: 1.2em; color: #F2F4F6;}
 
-    /* === 2단 레이아웃 (메인 + 사이드바) === */
     .page-wrapper { display: flex; gap: 30px; max-width: 1100px; margin: 40px auto; padding: 0 20px; align-items: flex-start; }
     .main-content { flex: 1; min-width: 0; }
     .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
 
-    /* 사이드바 위젯 공통 */
     .widget {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -128,7 +114,6 @@
     }
     .widget .widget-title { color: #F2F4F6; font-size: 1.1em; margin-top: 0; margin-bottom: 16px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
 
-    /* 프로필 위젯 */
     .widget.Profile { text-align: center; }
     .profile-img { width: 90px; height: 90px; border-radius: 35%; object-fit: cover; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1); }
     .profile-name { font-size: 1.2em; font-weight: 700; color: #F2F4F6; margin: 0 0 8px 0; }
@@ -136,13 +121,11 @@
     .visit-profile { display: inline-block; padding: 8px 16px; border: 1px solid #3182F6; color: #3182F6; border-radius: 12px; font-size: 0.9em; transition: all 0.2s; text-decoration: none; }
     .visit-profile:hover { background: #3182F6; color: #fff; }
 
-    /* 카테고리 (폴더) 목록 */
     .category-list { list-style: none; padding: 0; margin: 0; text-align: left; }
     .category-list li { margin-bottom: 10px; }
     .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
     .category-list a:hover { color: #3182F6; }
 
-    /* === 모바일 최적화 === */
     @media screen and (max-width: 800px) {
       .page-wrapper { flex-direction: column; margin: 10px auto; }
       .sidebar-wrapper { width: 100%; position: static; }
@@ -219,7 +202,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const postBody = document.querySelector('.post-body');
   if (!postBody) return;
 
-  // 1. 완벽한 섹션 접기/펴기 (수식 잔상 해결)
   const toggleHeadings = postBody.querySelectorAll('h2, h3, h4');
   toggleHeadings.forEach(heading => {
     heading.style.cursor = 'pointer';
@@ -264,13 +246,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // MathJax 렌더링 지연에 맞춘 강제 동기화 (수식 튀어나옴 방지)
   if (window.MathJax && MathJax.Hub) {
     MathJax.Hub.Queue(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); });
   }
   setTimeout(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); }, 1000);
 
-  // 2. 드래그 가능한 스마트 플로팅 목차 (ToC)
   if (toggleHeadings.length > 0) {
     const wrapper = document.createElement('div');
     wrapper.id = 'toc-wrapper';
@@ -291,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function() {
       a.href = '#' + heading.id;
       a.textContent = heading.textContent.replace(/^[0-9.\s]+/, '').replace('▼', '').trim();
       
-      // 목차 클릭 시 닫힌 섹션 열면서 부드럽게 이동
       a.addEventListener('click', function(e) {
         e.preventDefault(); 
         heading.classList.remove('heading-collapsed');
@@ -334,7 +313,6 @@ document.addEventListener("DOMContentLoaded", function() {
     wrapper.appendChild(tocBody);
     document.body.appendChild(wrapper);
 
-    // 드래그 앤 드롭 이벤트
     let xOffset = 0, yOffset = 0, isDragging = false, currentX, currentY, initialX, initialY;
     const resetPos = () => { xOffset = 0; yOffset = 0; wrapper.style.transform = `translate3d(0, 0, 0)`; };
 
@@ -375,7 +353,6 @@ document.addEventListener("DOMContentLoaded", function() {
     header.querySelector('.toc-reset-btn').onclick = resetPos;
   }
 
-  // 3. 각주 팝업 (테마 원본 로직 이식: ↩ 기호 강제 삭제 및 화면 이탈 방지)
   const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
   footnoteRefs.forEach(ref => {
     ref.addEventListener('click', e => {
@@ -398,7 +375,6 @@ document.addEventListener("DOMContentLoaded", function() {
         innerScroll.className = 'footnote-inner-scroll';
         innerScroll.innerHTML = targetLi.innerHTML;
         
-        // ⭐️ 핵심: '↩' (돌아가기 링크) 클래스를 찾아 강제 삭제
         const backref = innerScroll.querySelector('a.footnote-backref, a[href^="#fnref"], a.reversefootnote');
         if (backref) backref.remove();
 
@@ -418,7 +394,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let topPos = rect.bottom + window.scrollY + 10;
         let leftPos = rect.left + window.scrollX;
 
-        // ⭐️ 핵심: 화면 밖으로 튀어나가지 않게 좌표 보정
         if (leftPos + popupWidth > window.innerWidth - 15) { leftPos = window.innerWidth - popupWidth - 15; }
         if (leftPos < 15) leftPos = 15;
         if (rect.bottom + popupHeight + 15 > window.innerHeight) {
@@ -432,7 +407,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // 배경 빈 공간 클릭 시 각주 닫기
   const closeFootnotePopup = function(e) {
     if (!e.target.closest('.floating-footnote-content') && !e.target.closest('a[href^="#fn"]')) {
       const existingPopup = document.querySelector('.floating-footnote-content');
