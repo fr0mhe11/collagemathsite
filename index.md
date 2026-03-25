@@ -57,6 +57,5 @@ $$
 [^2]: 긴 그거 $$\sum=
 \sum=\sum=
 f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-$$
+= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots$$
 [^3]: short $\sum^{a}_{b}$
