@@ -271,7 +271,66 @@ document.addEventListener("DOMContentLoaded", function() {
       searchResultTemplate: '<li style="margin-bottom: 10px; font-size: 0.95em;"><a href="{url}" style="color: #3182F6; text-decoration: none; display: block;">📄 {title}</a></li>',
       noResultsText: '<li style="color: #8B95A1; font-size: 0.9em;">검색 결과가 없습니다.</li>'
     });
+  
   }
+
+// ⭐️ 1. 검색창에서 엔터(Enter) 누르면 첫 번째 결과로 이동
+  const searchInput = document.getElementById('search-input');
+  if(searchInput) {
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const firstResult = document.querySelector('#results-container a');
+        if (firstResult) window.location.href = firstResult.href;
+      }
+    });
+  }
+
+  // ⭐️ 2. 옵시디언 콜아웃 (Callouts) 자동 변환 로직
+  const blockquotes = document.querySelectorAll('.post-body blockquote');
+  blockquotes.forEach(bq => {
+    const firstP = bq.querySelector('p');
+    if (!firstP) return;
+    
+    // [!type], [!type]+, [!type]- 및 커스텀 제목 매칭
+    const regex = /^\[\!([a-zA-Z0-9-_]+)\]([+-]?)\s*(.*?)(?:<br>|\n|$)/;
+    const match = firstP.innerHTML.match(regex);
+    
+    if (match) {
+      const type = match[1].toLowerCase();
+      const fold = match[2]; // + 또는 -
+      let title = match[3].trim();
+      if (!title) title = type.charAt(0).toUpperCase() + type.slice(1);
+      
+      // 원본 텍스트에서 식별자 부분 삭제
+      firstP.innerHTML = firstP.innerHTML.replace(match[0], '');
+      if (firstP.innerHTML.trim() === '') firstP.remove();
+
+      // 폴딩(+/-) 여부에 따라 details 태그 사용
+      const isFoldable = fold === '+' || fold === '-';
+      const wrapper = document.createElement(isFoldable ? 'details' : 'div');
+      wrapper.className = `obsidian-callout callout-${type}`;
+      if (isFoldable && fold === '+') wrapper.open = true;
+
+      const titleDiv = document.createElement(isFoldable ? 'summary' : 'div');
+      titleDiv.className = 'callout-title';
+      
+      // 타입별 아이콘 매핑
+      const icons = { info:'ℹ️', warning:'⚠️', danger:'🛑', error:'🛑', success:'✅', check:'✅', note:'📝', question:'❓', bug:'🐛', example:'💡', quote:'💬' };
+      const icon = icons[type] || '📌';
+      titleDiv.innerHTML = `<span class="callout-icon">${icon}</span> ${title}`;
+
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'callout-content';
+      contentDiv.innerHTML = bq.innerHTML;
+
+      wrapper.appendChild(titleDiv);
+      wrapper.appendChild(contentDiv);
+      bq.replaceWith(wrapper);
+    }
+  });
+
+
+  
 
   // 2. 링크 자동 치환 로직 (.md -> .html)
   const allLinks = document.querySelectorAll('.post-body a');
