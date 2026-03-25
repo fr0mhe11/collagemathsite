@@ -15,7 +15,7 @@ $$\iint_{\partial V} \mathbf{F} \cdot d\mathbf{S} = \iiint_{V} (\nabla \cdot \ma
 * **우변:** 공간 $V$ 내부의 각 점에서 퍼져나가는 '발산'의 정도를 다 더한 것
 
 ## 2. 코드 블록 테스트
-이 기능은 나중에 커스텀 에디터를 만들 때 요긴하게 쓰입니다.
+이 기능은 나중에 커스텀 에디터를 만들 때 요긴하게 쓰입니다.[^2]
 ```javascript
 function calculateDivergence(vectorField) {
   console.log("발산 계산 완료");
@@ -24,7 +24,7 @@ function calculateDivergence(vectorField) {
 ```
 
 ## ㄴㅁㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴㅁㅇ
-ㄴㅁㅇㄴㅁㅇㄴㅇㅁㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴ
+ㄴㅁㅇㄴㅁㅇㄴㅇㅁㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴ[^3]
 ## ㄴㅇㄴㅁㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㄴ
 ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴ
 ## ㄴㅁㅇ
@@ -40,7 +40,11 @@ $$\begin{align*}
 \\ \int
 \end{align*}$$
 
-##ㅇㄴㅇㄴㅇㄴㅇ
+## ㅇㄴㅇㄴㅇㄴㅇ
 ㄴㅇㄴㅇㄴㅇㅁㄴㅇ
 ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇ
+
 [^1]: 이 정리는 가우스의 정리(Gauss's Theorem)라고도 불리며, 전자기학에서 가우스 법칙을 적분형에서 미분형으로 변환할 때 필수적으로 사용됩니다.
+
+[^2]: 긴 그거 $\sum$ $$\begin{align*}&\mathbb{N}  = \{ 1,2,3, \dots\}   \\&\mathbb{Z} = \{ -3,-2,-1 , 0 ,1,2,3, \dots \} \\ & \mathbb{Q} = \left\{   \frac{n}{m} ~|~ n,m \in \mathbb{Z} , m \neq 0   \right \} \\\frac{\frac{\frac{\int}{\int_{\int}}}{\int \sum^{\int}_{ssss}}}{\int}\\ \frac{\int}{\int}\\ \int \\ \int\\ \int\end{align*}$$
+[^3]: short $\sum^{a}_{b}$
