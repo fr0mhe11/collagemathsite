@@ -112,6 +112,56 @@
     .subscribe-form input[type="email"] { flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; outline: none;}
     .subscribe-form button { padding: 12px 24px; background: #3182F6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s;}
     .subscribe-form button:hover { background: #5C9DFF; }
+
+/* =========================================
+       1. 섹션 접기: MathJax 유령 여백(Gap) 완벽 제거 
+       ========================================= */
+    .hidden-section-content {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      height: 0 !important;
+      border: none !important;
+    }
+    .hidden-section-content * {
+      display: none !important;
+      margin: 0 !important;
+    }
+
+    /* =========================================
+       2. 모바일 완벽 최적화 (768px 이하 화면)
+       ========================================= */
+    @media screen and (max-width: 768px) {
+      /* 카드 여백 및 크기 다이어트 (모바일 화면 넓게 쓰기) */
+      .centered { padding: 10px; margin: 10px auto; }
+      .post-outer-container { padding: 25px 20px; border-radius: 16px; }
+      
+      /* 폰트 및 제목 크기 모바일에 맞게 압축 */
+      h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
+      .post-body h2 { font-size: 1.3em; margin-top: 2em; }
+      .post-body h3 { font-size: 1.1em; }
+      .post-body { font-size: 15px; word-break: keep-all; }
+
+      /* ⭐️ 핵심: 긴 수식이 화면을 뚫고 나가지 않게 가로 스크롤 허용 */
+      .MathJax_SVG_Display {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch; /* 아이폰 부드러운 스크롤 */
+        margin: 1em 0 !important;
+        padding-bottom: 10px; /* 스크롤바와 수식이 겹치지 않게 여백 */
+      }
+      
+      /* 코드 블록 가로 스크롤 최적화 */
+      .post-body pre { padding: 1em; font-size: 0.85em; }
+
+      /* 모바일 플로팅 목차: 손가락에 안 걸리적거리게 우측 하단으로 이동 */
+      #toc-wrapper {
+        top: auto !important;
+        bottom: 20px !important;
+        right: 20px !important;
+      }
+    }
+    
   </style>
 </head>
 <body>
