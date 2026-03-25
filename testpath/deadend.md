@@ -7,4 +7,4 @@ title: "Dead end!"
 
 $$\iint_{\partial V} \mathbf{F} \cdot d\mathbf{S} = \iiint_{V} (\nabla \cdot \mathbf{F}) \, dV$$
 
-[돌아가기](index.md)
+[돌아가기](/index.md)
