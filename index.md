@@ -11,7 +11,7 @@ title: "🪴fr0mhell's math stash"
 
 [막혀있는 공간](testpath/deadend.md)
 
-[또다른 데드엔드](testpath/test1.html)
+[또다른 데드엔드](testpath/test1.md)
 
 ### todo
 
