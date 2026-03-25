@@ -16,6 +16,7 @@
     });
   </script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_SVG"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script>
 
   <style>
     body, html { 
@@ -24,33 +25,35 @@
       font-family: 'Pretendard', sans-serif !important; margin: 0; padding: 0;
     }
     
-    /* ⭐️ PC/모바일 통합: 화면 중앙 정렬 및 햄버거 메뉴 디자인 */
-    .page-wrapper { display: flex; justify-content: center; max-width: 100%; margin: 40px auto; padding: 0 30px; }
+    .page-wrapper { display: flex; justify-content: center; max-width: 100%; margin: 60px auto 40px; padding: 0 30px; }
     .main-content { flex: 1; min-width: 0; max-width: 900px; width: 100%; }
 
-    .hamburger-btn { display: inline-block; background: #3182F6; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 1em; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.2s; }
-    .hamburger-btn:hover { background: #5C9DFF; }
+    /* ⭐️ 햄버거 메뉴를 화면 왼쪽 위 구석에 완벽 고정 */
+    .hamburger-btn { 
+      position: fixed; top: 20px; left: 20px; z-index: 10002;
+      display: inline-block; background: rgba(49, 130, 246, 0.9); color: white; border: none; 
+      padding: 10px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.2s; backdrop-filter: blur(4px);
+    }
+    .hamburger-btn:hover { background: rgba(92, 157, 255, 1); transform: translateY(-2px); }
     
-    /* ⭐️ 사이드바는 무조건 화면 밖으로 숨김 */
     .sidebar-wrapper {
       position: fixed; top: 0; left: -320px; width: 280px; height: 100vh;
       background: linear-gradient(145deg, #151619 0%, #0a0b0d 100%);
-      z-index: 10001; padding: 20px; overflow-y: auto; margin: 0;
+      z-index: 10001; padding: 60px 20px 20px 20px; overflow-y: auto; margin: 0;
       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.5); box-sizing: border-box;
     }
     .sidebar-wrapper.open { left: 0; }
 
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 10000; opacity: 0; transition: opacity 0.3s ease; }
     .sidebar-overlay.show { display: block; opacity: 1; }
 
-    /* 본문 카드 디자인 */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
       border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); padding: 40px;
     }
-    
     .site-title { color: #3182F6; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; text-decoration: none;}
     h1.post-title { font-size: 2em; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;}
 
@@ -59,118 +62,53 @@
     .post-body h2 { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.4em; }
     .post-body a { color: #3182F6; text-decoration: none; transition: all 0.2s ease; }
     .post-body a:hover { color: #5C9DFF; text-shadow: 0 0 8px rgba(49, 130, 246, 0.4); }
-    .post-body blockquote { background: linear-gradient(135deg, #24262b 0%, #1e2024 100%); padding: 18px 20px; border-left: 4px solid #3182F6; border-radius: 12px; margin: 1.5em 0; color: #B0B8C1; }
-    .post-body pre { background: linear-gradient(145deg, #111214 0%, #151619 100%); padding: 1.2em; border-radius: 12px; overflow-x: auto; border: 1px solid rgba(255, 255, 255, 0.04); }
-    .post-body code { background: rgba(255, 255, 255, 0.06); padding: 0.2em 0.4em; border-radius: 6px; font-family: monospace; }
-    .post-body pre code { background: transparent; padding: 0; }
     
+    /* ⭐️ 옵시디언 등 외부 HTML 수식 중복 렌더링 초강력 차단 */
+    math, mjx-container, .katex, .katex-mathml { display: none !important; }
     .MathJax_Preview { display: none !important; color: transparent !important; }
     .MJX_Assistive_MathML { display: none !important; }
     .MathJax_SVG_Display { display: block !important; margin: 1.5em auto !important; text-align: center !important; width: 100% !important; }
-    .post-body svg, .MathJax_SVG { pointer-events: none !important; }
-
-    .math.inline > math, .math.display > math { display: none !important; }
-    .katex-mathml { display: none !important; }
-    span.math.display > span.math.inline { display: block; }
-
-    .post-body { counter-reset: h2-count; }
-    .post-body h2 { counter-reset: h3-count; }
-    .post-body h2::before { counter-increment: h2-count; content: counter(h2-count) ". "; color: #3182F6; margin-right: 6px; }
-    .post-body h3::before { counter-increment: h3-count; content: counter(h2-count) "." counter(h3-count) " "; color: #3182F6; margin-right: 6px; }
-    .section-toggle-icon { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.6em; color: #8B95A1; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .heading-collapsed .section-toggle-icon { transform: translateY(-50%) rotate(-90deg); color: #B0B8C1; }
-    .hidden-section-content { display: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; border: none !important; visibility: hidden !important;}
-
-    #toc-wrapper {
-      position: fixed; top: 80px; right: 30px; width: 300px; max-width: 85vw; max-height: 80vh;
-      background: linear-gradient(145deg, rgba(30, 31, 36, 0.8) 0%, rgba(23, 24, 28, 0.85) 100%);
-      backdrop-filter: blur(16px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); z-index: 10000; display: flex; flex-direction: column; 
-      transition: width 0.3s, height 0.3s, border-radius 0.3s, background 0.3s;
-    }
-    #toc-wrapper.folded { width: 46px; height: 46px; border-radius: 23px; overflow: hidden; top: auto !important; bottom: 30px !important; right: 30px !important; left: auto !important; transform: none !important; background: rgba(30, 31, 36, 0.3) !important; }
-    .toc-header { padding: 12px 16px; cursor: grab; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); user-select: none; min-height: 50px; box-sizing: border-box;}
-    .toc-header:active { cursor: grabbing; }
-    .toc-title { font-weight: 700; color: #F2F4F6; font-size: 1.05em; pointer-events: none; }
-    .toc-header-btns { display: flex; align-items: center; gap: 8px; }
-    .toc-btn { background: none; border: none; color: #8B95A1; font-size: 1.1em; cursor: pointer; transition: color 0.2s; padding: 4px; }
-    .toc-btn:hover { color: #F2F4F6; }
-    .toc-body { padding: 16px; overflow-y: auto; flex-grow: 1; max-height: calc(80vh - 50px); }
-    .toc-body ul { list-style: none; padding-left: 0; margin: 0; counter-reset: toc-item; }
-    .toc-body ul ul { padding-left: 1.2em; margin-top: 6px; }
-    .toc-body li { margin-bottom: 8px; line-height: 1.4; counter-increment: toc-item; }
-    .toc-body a { color: #B0B8C1 !important; font-size: 0.9em; transition: color 0.2s ease; text-decoration: none; display: block; }
-    .toc-body a:hover { color: #3182F6 !important; }
-    .toc-body a::before { content: counters(toc-item, ".") ". "; color: #3182F6; margin-right: 6px; font-weight: 600; }
-    #toc-wrapper.folded .toc-header { border-bottom: none; padding: 0; justify-content: center; width: 100%; height: 100%; }
-    #toc-wrapper.folded .toc-title, #toc-wrapper.folded .toc-reset-btn, #toc-wrapper.folded .toc-body { display: none; }
-    #toc-wrapper.folded .toc-header-btns { gap: 0; width: 100%; height: 100%; justify-content: center; }
-    #toc-wrapper.folded .toc-toggle-btn { color: #B0B8C1; font-size: 1.5em; width: 100%; height: 100%; padding: 0; }
-
-    .floating-footnote-content {
-      position: absolute; width: fit-content; min-width: 150px; max-width: calc(100vw - 30px); 
-      background: linear-gradient(145deg, #202227 0%, #18191d 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08); border-left: 4px solid #3182F6; border-radius: 12px; 
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); z-index: 9999; animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
-    }
-    .footnote-inner-scroll { max-height: 50vh; overflow-y: auto; padding: 16px 36px 16px 16px; font-size: 0.9em; color: #E5E8EB; line-height: 1.6; }
-    .footnote-close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; color: #8B95A1; font-size: 1.2em; line-height: 1; transition: color 0.2s, background 0.2s; z-index: 10; background: #202227; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; box-shadow: -2px 2px 6px rgba(0,0,0,0.2); }
-    .footnote-close-btn:hover { color: #F2F4F6; background: rgba(255, 255, 255, 0.1); }
-    @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateX(-10px); } to { opacity: 1; transform: scale(1) translateX(0); } }
-    .footnotes { display: none !important; }
-
-    .interaction-box { background: linear-gradient(145deg, #18191d 0%, #121316 100%); border-radius: 16px; padding: 24px; margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.05); }
-    .interaction-box h3 { margin-top: 0; font-size: 1.2em; color: #F2F4F6;}
-
+    
     .widget {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 24px; margin-bottom: 24px;
+      padding: 24px; margin-bottom: 24px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .widget .widget-title { color: #F2F4F6; font-size: 1.1em; margin-top: 0; margin-bottom: 16px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
+    .profile-img { width: 90px; height: 90px; border-radius: 35%; margin-bottom: 12px; }
+    .visit-profile { display: inline-block; padding: 8px 16px; border: 1px solid #3182F6; color: #3182F6; border-radius: 12px; text-decoration: none; font-size: 0.9em; }
 
-    .widget.Profile { text-align: center; }
-    .profile-img { width: 90px; height: 90px; border-radius: 35%; object-fit: cover; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1); }
-    .profile-name { font-size: 1.2em; font-weight: 700; color: #F2F4F6; margin: 0 0 8px 0; }
-    .profile-desc { font-size: 0.9em; color: #B0B8C1; margin-bottom: 16px; line-height: 1.5; }
-    .visit-profile { display: inline-block; padding: 8px 16px; border: 1px solid #3182F6; color: #3182F6; border-radius: 12px; font-size: 0.9em; transition: all 0.2s; text-decoration: none; }
-    .visit-profile:hover { background: #3182F6; color: #fff; }
+    /* 검색창 스타일 */
+    #search-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.95em; outline: none; box-sizing: border-box; }
+    #search-input:focus { border-color: #3182F6; }
+    #results-container { padding: 0; margin: 15px 0 0 0; list-style: none; max-height: 250px; overflow-y: auto; }
 
-    .category-list { list-style: none; padding: 0; margin: 0; text-align: left; }
-    .category-list li { margin-bottom: 10px; }
-    .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
-    .category-list a:hover { color: #3182F6; }
-
-    /* 모바일 세부 최적화 */
     @media screen and (max-width: 900px) {
-      .page-wrapper { margin: 10px auto; padding: 0 15px;}
-      .post-outer-container { padding: 25px 20px; border-radius: 16px; }
-      h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
-      .post-body h2 { font-size: 1.3em; margin-top: 2em; }
-      .post-body h3 { font-size: 1.1em; }
-      .post-body { font-size: 15px; word-break: keep-all; }
-      .MathJax_SVG_Display { overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch; margin: 1em 0 !important; padding-bottom: 10px; }
-      .post-body pre { padding: 1em; font-size: 0.85em; }
-      #toc-wrapper { top: auto !important; bottom: 20px !important; right: 20px !important; }
+      .post-outer-container { padding: 25px 20px; }
+      #toc-wrapper { bottom: 20px !important; right: 20px !important; }
     }
   </style>
 </head>
 <body>
 
+<button id="sidebar-toggle-btn" class="hamburger-btn">☰ 메뉴</button>
+
 <div class="page-wrapper">
   
   <aside class="sidebar-wrapper">
-    <div class="widget Profile">
-      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="profile-img" alt="profile">
-      <h3 class="profile-name">Eugene Kang</h3>
-      <p class="profile-desc">Korea University Mathematics<br>Advanced Mathematics, Linux Mint, Obsidian</p>
+    <div class="widget" style="text-align: center;">
+      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="profile-img">
+      <h3 style="margin:0;">Eugene Kang</h3>
+      <p style="color:#B0B8C1; font-size:0.9em;">Korea University Mathematics</p>
       <a href="/collagemathsite/about.html" class="visit-profile">About Me</a>
     </div>
 
     <div class="widget">
-      <h3 class="widget-title">📁 Categories</h3>
-      <ul class="category-list">
+      <input type="text" id="search-input" placeholder="🔍 노트 검색...">
+      <ul id="results-container"></ul>
+    </div>
+
+    <div class="widget">
+      <h3 style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom:10px; margin-top:0;">📁 Categories</h3>
+      <ul style="list-style:none; padding:0; margin:0;">
         {% assign categories = "" | split: "" %}
         {% for page in site.pages %}
           {% unless page.dir == "/" or page.dir contains "/assets/" or page.dir contains "/css/" %}
@@ -178,303 +116,74 @@
           {% endunless %}
         {% endfor %}
         {% assign unique_categories = categories | uniq %}
-        
         {% for category in unique_categories %}
           {% assign cat_name = category | replace: "/", "" | capitalize %}
-          <li><a href="/collagemathsite{{ category }}">{{ cat_name }}</a></li>
+          <li style="margin-bottom:8px;"><a href="/collagemathsite{{ category }}" style="color:#B0B8C1; text-decoration:none;">{{ cat_name }}</a></li>
         {% endfor %}
       </ul>
     </div>
   </aside>
 
   <main class="main-content">
-    
-    <button id="sidebar-toggle-btn" class="hamburger-btn">☰ 메뉴</button>
-
     <div class="post-outer-container">
       <a href="/collagemathsite/" class="site-title">fr0mhell's math stash</a>
       <h1 class="post-title">{{ page.title }}</h1>
-      
-      <div class="post-body">
-        {{ content }}
-      </div>
+      <div class="post-body">{{ content }}</div>
 
-      <div class="interaction-box">
+      <div style="margin-top:40px; padding:24px; background:rgba(0,0,0,0.2); border-radius:16px;">
         <h3>💬 토론 및 댓글</h3>
         <script src="https://giscus.app/client.js"
-        data-repo="fr0mhe11/collagemathsite"
-        data-repo-id="R_kgDORwtcXQ"
-        data-category="General"
-        data-category-id="DIC_kwDORwtcXc4C5Rvp"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="dark_dimmed"
-        data-lang="ko"
-        crossorigin="anonymous"
-        async>
+                data-repo="fr0mhe11/collagemathsite"
+                data-repo-id="R_kgDORwtcXQ"
+                data-category="General"
+                data-category-id="DIC_kwDORwtcXc4C5Rvp"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="dark_dimmed"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
         </script>
       </div>
     </div>
   </main>
-
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  // ⭐️ 검색 기능 실행 스크립트
+  SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('results-container'),
+    json: '{{ site.baseurl }}/search.json',
+    searchResultTemplate: '<li style="margin-bottom: 10px; font-size: 0.95em;"><a href="{url}" style="color: #3182F6; text-decoration: none; display: block;">📄 {title}</a></li>',
+    noResultsText: '<li style="color: #8B95A1; font-size: 0.9em;">검색 결과가 없습니다.</li>'
+  });
 
-  // ⭐️ 1. 마크다운 링크(.md)를 .html로 자동 치환 로직 (옵시디언 호환성 완벽 해결)
+  // 링크 자동 치환 로직 (.md -> .html)
   const allLinks = document.querySelectorAll('.post-body a');
   allLinks.forEach(link => {
     let href = link.getAttribute('href');
-    if (href) {
-      // .md 로 끝나거나 .md#목차 처럼 앵커가 붙어있는 경우 모두 .html로 바꿈
+    if (href && href.includes('.md')) {
       href = href.replace(/\.md($|#)/, '.html$1');
       link.setAttribute('href', href);
     }
   });
 
-  // ⭐️ 2. 햄버거 메뉴 및 배경 딤(Dim) 처리 로직
+  // 사이드바 토글 로직
   const sidebar = document.querySelector('.sidebar-wrapper');
   const toggleBtn = document.getElementById('sidebar-toggle-btn');
   const overlay = document.createElement('div');
   overlay.className = 'sidebar-overlay';
   document.body.appendChild(overlay);
 
-  if(toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.add('open');
-      overlay.classList.add('show');
-    });
-  }
-  overlay.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-  });
+  toggleBtn.onclick = () => { sidebar.classList.add('open'); overlay.classList.add('show'); };
+  overlay.onclick = () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); };
 
-  // 3. 섹션 접기/펴기 로직
-  const postBody = document.querySelector('.post-body');
-  if (!postBody) return;
-
-  const toggleHeadings = postBody.querySelectorAll('h2, h3, h4');
-  toggleHeadings.forEach(heading => {
-    heading.style.cursor = 'pointer';
-    const icon = document.createElement('span');
-    icon.className = 'section-toggle-icon';
-    icon.textContent = '▼';
-    heading.appendChild(icon);
-    heading.classList.add('heading-collapsed'); 
-  });
-
-  const syncFolding = () => {
-    let skipLevel = 0; 
-    let node = postBody.firstElementChild;
-    while(node) {
-      if (node.id === 'toc-wrapper') { node = node.nextElementSibling; continue; }
-      const tag = node.tagName;
-      const isHeading = tag && /^H[1-6]$/i.test(tag);
-      const level = isHeading ? parseInt(tag.substring(1)) : 7;
-      
-      if (isHeading) {
-        if (skipLevel > 0 && level <= skipLevel) skipLevel = 0; 
-        if (skipLevel > 0) node.classList.add('hidden-section-content');
-        else {
-          node.classList.remove('hidden-section-content');
-          if (node.classList.contains('heading-collapsed')) skipLevel = level;
-        }
-      } else {
-        if (skipLevel > 0) node.classList.add('hidden-section-content');
-        else node.classList.remove('hidden-section-content');
-      }
-      node = node.nextElementSibling;
-    }
-  };
-  
-  window.syncFolding = syncFolding;
-  syncFolding();
-
-  toggleHeadings.forEach(heading => {
-    heading.addEventListener('click', function() {
-      this.classList.toggle('heading-collapsed');
-      syncFolding();
-    });
-  });
-
-  if (window.MathJax && MathJax.Hub) {
-    MathJax.Hub.Queue(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); });
-  }
-  setTimeout(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); }, 1000);
-
-  // 4. 플로팅 목차(ToC) 로직
-  if (toggleHeadings.length > 0) {
-    const wrapper = document.createElement('div');
-    wrapper.id = 'toc-wrapper';
-    const header = document.createElement('div');
-    header.className = 'toc-header';
-    header.innerHTML = `<span class="toc-title">목차</span><div class="toc-header-btns"><button class="toc-btn toc-reset-btn" title="맨 위로 고정">↺</button><button class="toc-btn toc-toggle-btn" title="접기/펴기">—</button></div>`;
-    
-    const tocBody = document.createElement('div');
-    tocBody.className = 'toc-body';
-    const rootUl = document.createElement('ul');
-    let uls = { 2: rootUl }; let currentLevel = 2;
-    
-    toggleHeadings.forEach((heading, index) => {
-      const level = parseInt(heading.tagName.substring(1));
-      heading.id = heading.id || 'heading-' + index;
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#' + heading.id;
-      a.textContent = heading.textContent.replace(/^[0-9.\s]+/, '').replace('▼', '').trim();
-      
-      a.addEventListener('click', function(e) {
-        e.preventDefault(); 
-        heading.classList.remove('heading-collapsed');
-        let prevNode = heading.previousElementSibling;
-        let targetLevel = parseInt(heading.tagName.substring(1));
-        while (prevNode) {
-          if (prevNode.tagName && /^H[1-6]$/i.test(prevNode.tagName)) {
-            const prevLevel = parseInt(prevNode.tagName.substring(1));
-            if (prevLevel < targetLevel) {
-              prevNode.classList.remove('heading-collapsed');
-              targetLevel = prevLevel; 
-            }
-          }
-          prevNode = prevNode.previousElementSibling;
-        }
-        syncFolding();
-        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        history.pushState(null, null, a.hash);
-      });
-
-      li.appendChild(a);
-      if (level > currentLevel) {
-        for (let i = currentLevel + 1; i <= level; i++) {
-          const newUl = document.createElement('ul');
-          const parentUl = uls[i - 1] || rootUl;
-          let parentLi = parentUl.lastElementChild || document.createElement('li');
-          if (!parentUl.lastElementChild) parentUl.appendChild(parentLi);
-          parentLi.appendChild(newUl);
-          uls[i] = newUl;
-        }
-      }
-      let targetUl = uls[level] || rootUl;
-      targetUl.appendChild(li);
-      currentLevel = level;
-      for (let i = level + 1; i <= 6; i++) uls[i] = null;
-    });
-    
-    tocBody.appendChild(rootUl);
-    wrapper.appendChild(header);
-    wrapper.appendChild(tocBody);
-    document.body.appendChild(wrapper);
-
-    let xOffset = 0, yOffset = 0, isDragging = false, currentX, currentY, initialX, initialY;
-    const resetPos = () => { xOffset = 0; yOffset = 0; wrapper.style.transform = `translate3d(0, 0, 0)`; };
-
-    header.addEventListener("mousedown", dragStart);
-    document.addEventListener("mouseup", () => isDragging = false);
-    document.addEventListener("mousemove", drag);
-    header.addEventListener("touchstart", dragStart, {passive: true});
-    document.addEventListener("touchend", () => isDragging = false);
-    document.addEventListener("touchmove", drag, {passive: false});
-
-    function dragStart(e) {
-      if (e.target.closest('.toc-btn')) return;
-      initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
-      initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
-      if (!wrapper.classList.contains('folded')) isDragging = true;
-    }
-
-    function drag(e) {
-      if (isDragging && !wrapper.classList.contains('folded')) {
-        e.preventDefault();
-        currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
-        currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
-        const maxX = 30, minX = -(window.innerWidth - wrapper.offsetWidth - 30); 
-        const maxY = window.innerHeight - wrapper.offsetHeight - 80, minY = -80; 
-        if (currentX > maxX) currentX = maxX; if (currentX < minX) currentX = minX;
-        if (currentY > maxY) currentY = maxY; if (currentY < minY) currentY = minY;
-        xOffset = currentX; yOffset = currentY;
-        wrapper.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-      }
-    }
-
-    header.querySelector('.toc-toggle-btn').onclick = () => {
-      wrapper.classList.toggle('folded');
-      const isFolded = wrapper.classList.contains('folded');
-      header.querySelector('.toc-toggle-btn').textContent = isFolded ? '+' : '—';
-      wrapper.style.transform = isFolded ? '' : `translate3d(${xOffset}px, ${yOffset}px, 0)`;
-    };
-    header.querySelector('.toc-reset-btn').onclick = resetPos;
-  }
-
-  // 5. 모바일 팝업 각주 로직
-  const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
-  footnoteRefs.forEach(ref => {
-    ref.addEventListener('click', e => {
-      e.preventDefault(); 
-      const existingPopup = document.querySelector('.floating-footnote-content');
-      if (existingPopup) {
-        existingPopup.remove();
-        if (existingPopup.dataset.refId === ref.hash) return;
-      }
-      
-      const targetId = ref.getAttribute('href').substring(1);
-      const targetLi = document.getElementById(targetId);
-      
-      if (targetLi) {
-        const popup = document.createElement('div');
-        popup.className = 'floating-footnote-content';
-        popup.dataset.refId = ref.hash;
-        
-        const innerScroll = document.createElement('div');
-        innerScroll.className = 'footnote-inner-scroll';
-        innerScroll.innerHTML = targetLi.innerHTML;
-        
-        const backref = innerScroll.querySelector('a.footnote-backref, a[href^="#fnref"], a.reversefootnote');
-        if (backref) backref.remove();
-
-        const closeBtn = document.createElement('span');
-        closeBtn.innerHTML = '×';
-        closeBtn.className = 'footnote-close-btn';
-        closeBtn.onclick = () => popup.remove();
-        
-        popup.appendChild(closeBtn);
-        popup.appendChild(innerScroll);
-        document.body.appendChild(popup);
-
-        const rect = ref.getBoundingClientRect();
-        const popupWidth = popup.offsetWidth;
-        const popupHeight = popup.offsetHeight; 
-        
-        let topPos = rect.bottom + window.scrollY + 10;
-        let leftPos = rect.left + window.scrollX;
-
-        if (leftPos + popupWidth > window.innerWidth - 15) { leftPos = window.innerWidth - popupWidth - 15; }
-        if (leftPos < 15) leftPos = 15;
-        if (rect.bottom + popupHeight + 15 > window.innerHeight) {
-          topPos = rect.top + window.scrollY - popupHeight - 10;
-          if (topPos < window.scrollY + 10) topPos = window.scrollY + 10;
-        }
-
-        popup.style.top = topPos + 'px';
-        popup.style.left = leftPos + 'px';
-      }
-    });
-  });
-
-  const closeFootnotePopup = function(e) {
-    if (!e.target.closest('.floating-footnote-content') && !e.target.closest('a[href^="#fn"]')) {
-      const existingPopup = document.querySelector('.floating-footnote-content');
-      if (existingPopup) existingPopup.remove();
-    }
-  };
-  document.addEventListener('click', closeFootnotePopup);
-  document.addEventListener('touchstart', closeFootnotePopup, { passive: true });
 });
 </script>
-
 </body>
 </html>
