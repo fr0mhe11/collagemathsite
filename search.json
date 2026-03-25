@@ -1,6 +1,4 @@
----
-layout: none
----
+
 [
   {% assign pages_with_title = site.pages | where_exp: "item", "item.title != nil" %}
   {% for page in pages_with_title %}
