@@ -21,3 +21,5 @@ function calculateDivergence(vectorField) {
   console.log("발산 계산 완료");
   return true;
 }
+```
+[^1]: 이 정리는 가우스의 정리(Gauss's Theorem)라고도 불리며, 전자기학에서 가우스 법칙을 적분형에서 미분형으로 변환할 때 필수적으로 사용됩니다.
