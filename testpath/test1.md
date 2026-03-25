@@ -1,9 +1,8 @@
-
 ---
 layout: default
 title: "another Dead end!"
 ---
-
+hello 
 # Real Analysis Study Material: From Numbers to Cardinality
 
 ## Chapter 1. The Real and Complex Number (실수와 복소수)
