@@ -205,9 +205,17 @@
       <p style="color:#B0B8C1; font-size:0.9em;">Korea University Mathematics</p>
       <a href="/collagemathsite/about.html" class="visit-profile">About Me</a>
     </div>
-    <div class="widget">
-      <input type="text" id="search-input" placeholder="🔍 노트 검색...">
-      <ul id="results-container"></ul>
+ <div class="widget">
+      <input type="text" id="local-search-input" placeholder="🔍 제목으로 검색..." style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.95em; outline: none; box-sizing: border-box;">
+      
+      <ul id="local-search-results" style="list-style: none; padding: 0; margin: 10px 0 0 0; max-height: 250px; overflow-y: auto;">
+        {% assign pages_with_title = site.pages | where_exp: "item", "item.title != nil" %}
+        {% for page in pages_with_title %}
+          <li class="search-result-item" data-title="{{ page.title | downcase }}" style="display: none; margin-bottom: 10px; font-size: 0.95em;">
+            <a href="{{ site.baseurl }}{{ page.url }}" style="color: #3182F6; text-decoration: none; display: block;">📄 {{ page.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
 
 
@@ -263,15 +271,43 @@ document.addEventListener("DOMContentLoaded", function() {
 // 1. 검색 기능 실행
 
   // 1. 검색 기능 실행
-  if(typeof SimpleJekyllSearch !== 'undefined') {
-    SimpleJekyllSearch({
-      searchInput: document.getElementById('search-input'),
-      resultsContainer: document.getElementById('results-container'),
-      json: '{{ site.baseurl }}/search.json',
-      searchResultTemplate: '<li style="margin-bottom: 10px; font-size: 0.95em;"><a href="{url}" style="color: #3182F6; text-decoration: none; display: block;">📄 {title}</a></li>',
-      noResultsText: '<li style="color: #8B95A1; font-size: 0.9em;">검색 결과가 없습니다.</li>'
+// ⭐️ 100% 자체 내장 검색기 로직
+  const searchInput = document.getElementById('local-search-input');
+  const searchItems = document.querySelectorAll('.search-result-item');
+
+  if(searchInput) {
+    // 1. 타이핑 할 때마다 실시간으로 글 제목 필터링
+    searchInput.addEventListener('input', function(e) {
+      const keyword = e.target.value.toLowerCase().trim();
+      
+      if (keyword === '') {
+        // 검색어가 없으면 목록을 다시 숨김
+        searchItems.forEach(item => item.style.display = 'none');
+        return;
+      }
+      
+      searchItems.forEach(item => {
+        const title = item.getAttribute('data-title');
+        // 타이핑한 키워드가 제목에 포함되어 있으면 화면에 표시
+        if (title.includes(keyword)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
     });
-  
+
+    // 2. 검색창에서 엔터(Enter) 누르면 가장 위에 있는 검색 결과로 즉시 이동
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault(); // 페이지 새로고침 방지
+        const firstVisibleResult = Array.from(searchItems).find(item => item.style.display === 'block');
+        if (firstVisibleResult) {
+          const link = firstVisibleResult.querySelector('a');
+          if (link) window.location.href = link.href;
+        }
+      }
+    });
   }
 
 // ⭐️ 1. 검색창에서 엔터(Enter) 누르면 첫 번째 결과로 이동
