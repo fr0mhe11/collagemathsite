@@ -23,8 +23,8 @@
       background-attachment: fixed !important; color: #F2F4F6 !important; 
       font-family: 'Pretendard', sans-serif !important; margin: 0; padding: 0;
     }
-    .centered { max-width: 900px; margin: 40px auto; padding: 0 20px; }
     
+    /* === 메인 카드 박스 === */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -34,6 +34,7 @@
     .site-title { color: #3182F6; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; text-decoration: none;}
     h1.post-title { font-size: 2em; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;}
 
+    /* === 본문 텍스트 및 헤딩 === */
     .post-body { line-height: 1.65; font-size: 16px; color: #E5E8EB; word-break: keep-all; }
     .post-body h2, .post-body h3, .post-body h4 { font-weight: 700; color: #F2F4F6; margin-top: 2.5em; margin-bottom: 0.8em; position: relative; padding-left: 20px; cursor: pointer; scroll-margin-top: 80px;}
     .post-body h2 { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.4em; }
@@ -44,24 +45,27 @@
     .post-body code { background: rgba(255, 255, 255, 0.06); padding: 0.2em 0.4em; border-radius: 6px; font-family: monospace; }
     .post-body pre code { background: transparent; padding: 0; }
     
-    /* 강력한 수식 숨김 처리 및 잔상 제거 */
+    /* === 강력한 수식 숨김 처리 및 잔상 제거 === */
     .MathJax_Preview { display: none !important; color: transparent !important; }
     .MJX_Assistive_MathML { display: none !important; }
     .MathJax_SVG_Display { display: block !important; margin: 1.5em auto !important; text-align: center !important; width: 100% !important; }
     .post-body svg, .MathJax_SVG { pointer-events: none !important; }
 
-    /* 자동 넘버링 및 접기 아이콘 */
+    /* ⭐️ 옵시디언/Pandoc 변환 시 딸려온 중복 수식(MathML 등) 강제 숨김 */
+    .math.inline > math, .math.display > math { display: none !important; }
+    .katex-mathml { display: none !important; }
+    span.math.display > span.math.inline { display: block; }
+
+    /* === 자동 넘버링 및 접기 아이콘 === */
     .post-body { counter-reset: h2-count; }
     .post-body h2 { counter-reset: h3-count; }
     .post-body h2::before { counter-increment: h2-count; content: counter(h2-count) ". "; color: #3182F6; margin-right: 6px; }
     .post-body h3::before { counter-increment: h3-count; content: counter(h2-count) "." counter(h3-count) " "; color: #3182F6; margin-right: 6px; }
     .section-toggle-icon { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.6em; color: #8B95A1; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .heading-collapsed .section-toggle-icon { transform: translateY(-50%) rotate(-90deg); color: #B0B8C1; }
-    
-    /* 섹션 접혔을 때 완벽하게 숨김 (수식 튀어나옴 방지) */
-    .hidden-section-content { display: none !important; visibility: hidden !important; }
+    .hidden-section-content { display: none !important; margin: 0 !important; padding: 0 !important; height: 0 !important; border: none !important; visibility: hidden !important;}
 
-    /* 드래그 가능한 플로팅 목차 (ToC) */
+    /* === 드래그 가능한 플로팅 목차 (ToC) === */
     #toc-wrapper {
       position: fixed; top: 80px; right: 30px; width: 300px; max-width: 85vw; max-height: 80vh;
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.8) 0%, rgba(23, 24, 28, 0.85) 100%);
@@ -93,8 +97,7 @@
     #toc-wrapper.folded .toc-header-btns { gap: 0; width: 100%; height: 100%; justify-content: center; }
     #toc-wrapper.folded .toc-toggle-btn { color: #B0B8C1; font-size: 1.5em; width: 100%; height: 100%; padding: 0; }
 
-    /* 모바일 팝업 각주 */
-  /* 모바일 팝업 각주 및 크기 최적화 (블로거 테마 원본 이식) */
+    /* === 모바일 팝업 각주 === */
     .floating-footnote-content {
       position: absolute; width: fit-content; min-width: 150px; max-width: calc(100vw - 30px); 
       background: linear-gradient(145deg, #202227 0%, #18191d 100%);
@@ -105,67 +108,13 @@
     .footnote-close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; color: #8B95A1; font-size: 1.2em; line-height: 1; transition: color 0.2s, background 0.2s; z-index: 10; background: #202227; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; box-shadow: -2px 2px 6px rgba(0,0,0,0.2); }
     .footnote-close-btn:hover { color: #F2F4F6; background: rgba(255, 255, 255, 0.1); }
     @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateX(-10px); } to { opacity: 1; transform: scale(1) translateX(0); } }
-    .footnotes { display: none !important; } /* 원본 리스트 텍스트 숨기기 */
+    .footnotes { display: none !important; }
 
-    /* 구독 및 댓글창 */
+    /* === 인터랙션 (댓글/구독) 박스 === */
     .interaction-box { background: linear-gradient(145deg, #18191d 0%, #121316 100%); border-radius: 16px; padding: 24px; margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.05); }
     .interaction-box h3 { margin-top: 0; font-size: 1.2em; color: #F2F4F6;}
-    .subscribe-form { display: flex; gap: 10px; margin-bottom: 20px;}
-    .subscribe-form input[type="email"] { flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; outline: none;}
-    .subscribe-form button { padding: 12px 24px; background: #3182F6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s;}
-    .subscribe-form button:hover { background: #5C9DFF; }
 
-/* =========================================
-       1. 섹션 접기: MathJax 유령 여백(Gap) 완벽 제거 
-       ========================================= */
-    .hidden-section-content {
-      display: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      height: 0 !important;
-      border: none !important;
-    }
-    .hidden-section-content * {
-      display: none !important;
-      margin: 0 !important;
-    }
-
-    /* =========================================
-       2. 모바일 완벽 최적화 (768px 이하 화면)
-       ========================================= */
-    @media screen and (max-width: 768px) {
-      /* 카드 여백 및 크기 다이어트 (모바일 화면 넓게 쓰기) */
-      .centered { padding: 10px; margin: 10px auto; }
-      .post-outer-container { padding: 25px 20px; border-radius: 16px; }
-      
-      /* 폰트 및 제목 크기 모바일에 맞게 압축 */
-      h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
-      .post-body h2 { font-size: 1.3em; margin-top: 2em; }
-      .post-body h3 { font-size: 1.1em; }
-      .post-body { font-size: 15px; word-break: keep-all; }
-
-      /* ⭐️ 핵심: 긴 수식이 화면을 뚫고 나가지 않게 가로 스크롤 허용 */
-      .MathJax_SVG_Display {
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        -webkit-overflow-scrolling: touch; /* 아이폰 부드러운 스크롤 */
-        margin: 1em 0 !important;
-        padding-bottom: 10px; /* 스크롤바와 수식이 겹치지 않게 여백 */
-      }
-      
-      /* 코드 블록 가로 스크롤 최적화 */
-      .post-body pre { padding: 1em; font-size: 0.85em; }
-
-      /* 모바일 플로팅 목차: 손가락에 안 걸리적거리게 우측 하단으로 이동 */
-      #toc-wrapper {
-        top: auto !important;
-        bottom: 20px !important;
-        right: 20px !important;
-      }
-    }
-
-
-/* === 2단 레이아웃 (메인 + 사이드바) === */
+    /* === 2단 레이아웃 (메인 + 사이드바) === */
     .page-wrapper { display: flex; gap: 30px; max-width: 1100px; margin: 40px auto; padding: 0 20px; align-items: flex-start; }
     .main-content { flex: 1; min-width: 0; }
     .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
@@ -193,21 +142,24 @@
     .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
     .category-list a:hover { color: #3182F6; }
 
-    /* 모바일에서는 1단으로 합치기 */
-    @media (max-width: 800px) {
+    /* === 모바일 최적화 === */
+    @media screen and (max-width: 800px) {
       .page-wrapper { flex-direction: column; margin: 10px auto; }
       .sidebar-wrapper { width: 100%; position: static; }
+      .post-outer-container { padding: 25px 20px; border-radius: 16px; }
+      h1.post-title { font-size: 1.5em; padding-bottom: 15px; }
+      .post-body h2 { font-size: 1.3em; margin-top: 2em; }
+      .post-body h3 { font-size: 1.1em; }
+      .post-body { font-size: 15px; word-break: keep-all; }
+      .MathJax_SVG_Display { overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch; margin: 1em 0 !important; padding-bottom: 10px; }
+      .post-body pre { padding: 1em; font-size: 0.85em; }
+      #toc-wrapper { top: auto !important; bottom: 20px !important; right: 20px !important; }
     }
-
-
-
-    
-    
   </style>
 </head>
 <body>
 
-  <div class="page-wrapper">
+<div class="page-wrapper">
   
   <aside class="sidebar-wrapper">
     <div class="widget Profile">
@@ -216,7 +168,8 @@
       <p class="profile-desc">Korea University Mathematics<br>Advanced Mathematics, Linux Mint, Obsidian</p>
       <a href="{{ site.baseurl }}/about.html" class="visit-profile">About Me</a>
     </div>
-<div class="widget">
+
+    <div class="widget">
       <h3 class="widget-title">📁 Categories</h3>
       <ul class="category-list">
         {% assign categories = "" | split: "" %}
@@ -237,7 +190,7 @@
 
   <main class="main-content">
     <div class="post-outer-container">
-     <a href="{{ site.baseurl }}/" class="site-title">fr0mhell's math stash</a>
+      <a href="{{ site.baseurl }}/" class="site-title">fr0mhell's math stash</a>
       <h1 class="post-title">{{ page.title }}</h1>
       
       <div class="post-body">
@@ -250,7 +203,7 @@
           data-host="https://cusdis.com"
           data-app-id="YOUR_APP_ID"
           data-page-id="{{ page.url }}"
-          data-page-url="{{ site.url }}{{ page.url }}"
+          data-page-url="{{ site.url }}{{ site.baseurl }}{{ page.url }}"
           data-page-title="{{ page.title }}"
           data-theme="dark">
         </div>
@@ -259,45 +212,6 @@
     </div>
   </main>
 
-</div>
-
-<div class="centered">
-  <div class="post-outer-container">
-    <a href="/" class="site-title">fr0mhell's math stash</a>
-    <h1 class="post-title">{{ page.title }}</h1>
-    
-    <div class="post-body">
-      {{ content }}
-    </div>
-
-    <div class="interaction-box">
-      <h3>📬 노트 구독하기</h3>
-      <p style="color: #B0B8C1; font-size: 0.9em;">새로운 수학 노트가 올라오면 이메일로 알려드립니다.</p>
-      <form class="subscribe-form" action="https://buttondown.email/api/emails/embed-subscribe/YOUR_ID" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/YOUR_ID', 'popupwindow')">
-        <input type="email" name="email" id="bd-email" placeholder="이메일 주소 입력" required>
-        <button type="submit">구독</button>
-      </form>
-      <hr style="border:0; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 30px 0;">
-      <h3>💬 토론 및 댓글</h3>
-      <div id="giscus-container">
-        <script src="https://giscus.app/client.js"
-        data-repo="fr0mhe11/collagemathsite"
-        data-repo-id="R_kgDORwtcXQ"
-        data-category="General"
-        data-category-id="DIC_kwDORwtcXc4C5Rvp"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="dark_dimmed"
-        data-lang="ko"
-        crossorigin="anonymous"
-        async>
-</script>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -461,7 +375,6 @@ document.addEventListener("DOMContentLoaded", function() {
     header.querySelector('.toc-reset-btn').onclick = resetPos;
   }
 
-  // 3. 각주 팝업
   // 3. 각주 팝업 (테마 원본 로직 이식: ↩ 기호 강제 삭제 및 화면 이탈 방지)
   const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
   footnoteRefs.forEach(ref => {
