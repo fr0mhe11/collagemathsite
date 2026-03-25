@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "testpath"
+title: "testpath 카테고"
 ---
 
 이 카테고리에 포함된 전체 수학 노트 목록입니다. 🌱
