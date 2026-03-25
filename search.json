@@ -1,11 +1,14 @@
-
+---
+layout: none
+---
 [
   {% assign pages_with_title = site.pages | where_exp: "item", "item.title != nil" %}
   {% for page in pages_with_title %}
     {
-      "title"    : "{{ page.title | escape }}",
-      "category" : "{{ page.dir | replace: '/', '' }}",
-      "url"      : "{{ site.baseurl }}{{ page.url }}"
+      "title"    : {{ page.title | jsonify }},
+      "category" : {{ page.dir | replace: '/', '' | jsonify }},
+      "content"  : {{ page.content | strip_html | strip_newlines | jsonify }},
+      "url"      : {{ site.baseurl | append: page.url | jsonify }}
     }{% unless forloop.last %},{% endunless %}
   {% endfor %}
 ]
