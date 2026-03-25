@@ -53,9 +53,6 @@ $$
 
 [^1]: 이 정리는 가우스의 정리(Gauss's Theorem)라고도 불리며, 전자기학에서 가우스 법칙을 적분형에서 미분형으로 변환할 때 필수적으로 사용됩니다.
 
-[^2]: 긴 그거 $$\sum=
-\sum=\sum=
-f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots$$
+[^2]: 긴 그거 $$\sum=\sum=\sum=f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots$$
 
 [^3]: short $\sum^{a}_{b}$
