@@ -157,6 +157,39 @@
       .post-body pre { padding: 1em; font-size: 0.85em; }
       #toc-wrapper { top: auto !important; bottom: 20px !important; right: 20px !important; }
     }
+/* === 옵시디언 콜아웃 (Callouts) 완벽 지원 === */
+    .obsidian-callout {
+      margin: 1.5em 0; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03); overflow: hidden;
+    }
+    .callout-title {
+      padding: 12px 16px; font-weight: bold; background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; gap: 8px; margin: 0;
+    }
+    details.obsidian-callout > .callout-title { cursor: pointer; }
+    .callout-content { padding: 16px; font-size: 0.95em; line-height: 1.6; }
+    .callout-content > *:first-child { margin-top: 0; }
+    .callout-content > *:last-child { margin-bottom: 0; }
+    
+    /* 타입별 색상 포인트 */
+    .callout-info, .callout-todo { border-left: 4px solid #3182F6; }
+    .callout-info .callout-title, .callout-todo .callout-title { color: #3182F6; }
+    .callout-warning, .callout-attention { border-left: 4px solid #F5A623; }
+    .callout-warning .callout-title, .callout-attention .callout-title { color: #F5A623; }
+    .callout-danger, .callout-error, .callout-bug { border-left: 4px solid #FF4B4B; }
+    .callout-danger .callout-title, .callout-error .callout-title, .callout-bug .callout-title { color: #FF4B4B; }
+    .callout-success, .callout-check, .callout-done { border-left: 4px solid #00C471; }
+    .callout-success .callout-title, .callout-check .callout-title, .callout-done .callout-title { color: #00C471; }
+    .callout-note, .callout-abstract, .callout-summary, .callout-tldr { border-left: 4px solid #8B95A1; }
+    .callout-note .callout-title, .callout-abstract .callout-title, .callout-summary .callout-title { color: #8B95A1; }
+    .callout-question, .callout-help, .callout-faq { border-left: 4px solid #E57373; }
+    .callout-question .callout-title, .callout-help .callout-title, .callout-faq .callout-title { color: #E57373; }
+    .callout-quote, .callout-cite { border-left: 4px solid #9E9E9E; }
+    .callout-quote .callout-title, .callout-cite .callout-title { color: #9E9E9E; }
+    .callout-example { border-left: 4px solid #BA68C8; }
+    .callout-example .callout-title { color: #BA68C8; }
+
+    
   </style>
 </head>
 <body>
