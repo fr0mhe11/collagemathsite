@@ -25,7 +25,6 @@
     }
     .centered { max-width: 900px; margin: 40px auto; padding: 0 20px; }
     
-    /* 메인 카드 디자인 */
     .post-outer-container {
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -35,58 +34,78 @@
     .site-title { color: #3182F6; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; text-decoration: none;}
     h1.post-title { font-size: 2em; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;}
 
-    /* 본문 텍스트 및 헤딩 */
     .post-body { line-height: 1.65; font-size: 16px; color: #E5E8EB; word-break: keep-all; }
     .post-body h2, .post-body h3, .post-body h4 { font-weight: 700; color: #F2F4F6; margin-top: 2.5em; margin-bottom: 0.8em; position: relative; padding-left: 20px; cursor: pointer; scroll-margin-top: 80px;}
     .post-body h2 { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.4em; }
     .post-body a { color: #3182F6; text-decoration: none; transition: all 0.2s ease; }
     .post-body a:hover { color: #5C9DFF; text-shadow: 0 0 8px rgba(49, 130, 246, 0.4); }
-    .post-body blockquote { background: linear-gradient(135deg, #24262b 0%, #1e2024 100%); padding: 18px 20px; border-left: 4px solid #3182F6; border-radius: 12px; margin: 1.5em 0; color: #B0B8C1; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .post-body blockquote { background: linear-gradient(135deg, #24262b 0%, #1e2024 100%); padding: 18px 20px; border-left: 4px solid #3182F6; border-radius: 12px; margin: 1.5em 0; color: #B0B8C1; }
     .post-body pre { background: linear-gradient(145deg, #111214 0%, #151619 100%); padding: 1.2em; border-radius: 12px; overflow-x: auto; border: 1px solid rgba(255, 255, 255, 0.04); }
     .post-body code { background: rgba(255, 255, 255, 0.06); padding: 0.2em 0.4em; border-radius: 6px; font-family: monospace; }
     .post-body pre code { background: transparent; padding: 0; }
     
-    /* 넘버링 및 접기 아이콘 */
+    /* 강력한 수식 숨김 처리 및 잔상 제거 */
+    .MathJax_Preview { display: none !important; color: transparent !important; }
+    .MJX_Assistive_MathML { display: none !important; }
+    .MathJax_SVG_Display { display: block !important; margin: 1.5em auto !important; text-align: center !important; width: 100% !important; }
+    .post-body svg, .MathJax_SVG { pointer-events: none !important; }
+
+    /* 자동 넘버링 및 접기 아이콘 */
     .post-body { counter-reset: h2-count; }
     .post-body h2 { counter-reset: h3-count; }
     .post-body h2::before { counter-increment: h2-count; content: counter(h2-count) ". "; color: #3182F6; margin-right: 6px; }
     .post-body h3::before { counter-increment: h3-count; content: counter(h2-count) "." counter(h3-count) " "; color: #3182F6; margin-right: 6px; }
-    .section-toggle-icon { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.6em; color: #8B95A1; transition: transform 0.3s; }
-    .heading-collapsed .section-toggle-icon { transform: translateY(-50%) rotate(-90deg); }
-    .hidden-section-content { display: none !important; }
+    .section-toggle-icon { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.6em; color: #8B95A1; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .heading-collapsed .section-toggle-icon { transform: translateY(-50%) rotate(-90deg); color: #B0B8C1; }
+    
+    /* 섹션 접혔을 때 완벽하게 숨김 (수식 튀어나옴 방지) */
+    .hidden-section-content { display: none !important; visibility: hidden !important; }
 
-    /* 플로팅 목차 (ToC) */
+    /* 드래그 가능한 플로팅 목차 (ToC) */
     #toc-wrapper {
-      position: fixed; top: 80px; right: 30px; width: 300px; max-height: 80vh;
+      position: fixed; top: 80px; right: 30px; width: 300px; max-width: 85vw; max-height: 80vh;
       background: linear-gradient(145deg, rgba(30, 31, 36, 0.8) 0%, rgba(23, 24, 28, 0.85) 100%);
       backdrop-filter: blur(16px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); z-index: 10000; display: flex; flex-direction: column; 
+      transition: width 0.3s, height 0.3s, border-radius 0.3s, background 0.3s;
     }
-    #toc-wrapper.folded { width: 46px; height: 46px; border-radius: 23px; overflow: hidden; top: auto !important; bottom: 30px !important; right: 30px !important; }
-    .toc-header { padding: 12px 16px; cursor: grab; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); user-select: none; }
-    .toc-title { font-weight: 700; color: #F2F4F6; }
-    .toc-btn { background: none; border: none; color: #8B95A1; cursor: pointer; }
-    .toc-body { padding: 16px; overflow-y: auto; }
-    .toc-body ul { list-style: none; padding-left: 0; margin: 0; }
+    #toc-wrapper.folded { 
+      width: 46px; height: 46px; border-radius: 23px; overflow: hidden; 
+      top: auto !important; bottom: 30px !important; right: 30px !important; left: auto !important;
+      transform: none !important; background: rgba(30, 31, 36, 0.3) !important; 
+    }
+    .toc-header { padding: 12px 16px; cursor: grab; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); user-select: none; min-height: 50px; box-sizing: border-box;}
+    .toc-header:active { cursor: grabbing; }
+    .toc-title { font-weight: 700; color: #F2F4F6; font-size: 1.05em; pointer-events: none; }
+    .toc-header-btns { display: flex; align-items: center; gap: 8px; }
+    .toc-btn { background: none; border: none; color: #8B95A1; font-size: 1.1em; cursor: pointer; transition: color 0.2s; padding: 4px; }
+    .toc-btn:hover { color: #F2F4F6; }
+    .toc-body { padding: 16px; overflow-y: auto; flex-grow: 1; max-height: calc(80vh - 50px); }
+    .toc-body ul { list-style: none; padding-left: 0; margin: 0; counter-reset: toc-item; }
     .toc-body ul ul { padding-left: 1.2em; margin-top: 6px; }
-    .toc-body li { margin-bottom: 8px; font-size: 0.9em; }
-    .toc-body a { color: #B0B8C1; text-decoration: none; }
-    .toc-body a:hover { color: #3182F6; }
-    #toc-wrapper.folded .toc-header { border-bottom: none; padding: 0; justify-content: center; height: 100%; }
+    .toc-body li { margin-bottom: 8px; line-height: 1.4; counter-increment: toc-item; }
+    .toc-body a { color: #B0B8C1 !important; font-size: 0.9em; transition: color 0.2s ease; text-decoration: none; display: block; }
+    .toc-body a:hover { color: #3182F6 !important; }
+    .toc-body a::before { content: counters(toc-item, ".") ". "; color: #3182F6; margin-right: 6px; font-weight: 600; }
+    
+    #toc-wrapper.folded .toc-header { border-bottom: none; padding: 0; justify-content: center; width: 100%; height: 100%; }
     #toc-wrapper.folded .toc-title, #toc-wrapper.folded .toc-reset-btn, #toc-wrapper.folded .toc-body { display: none; }
-    #toc-wrapper.folded .toc-toggle-btn { color: #B0B8C1; font-size: 1.5em; }
+    #toc-wrapper.folded .toc-header-btns { gap: 0; width: 100%; height: 100%; justify-content: center; }
+    #toc-wrapper.folded .toc-toggle-btn { color: #B0B8C1; font-size: 1.5em; width: 100%; height: 100%; padding: 0; }
 
-    /* 각주 팝업 */
+    /* 모바일 팝업 각주 */
     .floating-footnote-content {
       position: absolute; width: fit-content; min-width: 150px; max-width: calc(100vw - 30px); 
       background: linear-gradient(145deg, #202227 0%, #18191d 100%);
       border: 1px solid rgba(255, 255, 255, 0.08); border-left: 4px solid #3182F6; border-radius: 12px; 
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); z-index: 9999; 
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); z-index: 9999; animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
     }
-    .footnote-inner-scroll { max-height: 50vh; overflow-y: auto; padding: 16px 36px 16px 16px; font-size: 0.9em; }
-    .footnote-close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; background: #202227; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .footnote-inner-scroll { max-height: 50vh; overflow-y: auto; padding: 16px 36px 16px 16px; font-size: 0.9em; color: #E5E8EB; }
+    .footnote-close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; color: #8B95A1; background: #202227; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; box-shadow: -2px 2px 6px rgba(0,0,0,0.2); z-index: 10;}
+    @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateX(-10px); } to { opacity: 1; transform: scale(1) translateX(0); } }
+    .footnotes { display: none !important; }
 
-    /* 하단 구독 및 댓글 박스 */
+    /* 구독 및 댓글창 */
     .interaction-box { background: linear-gradient(145deg, #18191d 0%, #121316 100%); border-radius: 16px; padding: 24px; margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.05); }
     .interaction-box h3 { margin-top: 0; font-size: 1.2em; color: #F2F4F6;}
     .subscribe-form { display: flex; gap: 10px; margin-bottom: 20px;}
@@ -113,15 +132,12 @@
         <input type="email" name="email" id="bd-email" placeholder="이메일 주소 입력" required>
         <button type="submit">구독</button>
       </form>
-
       <hr style="border:0; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 30px 0;">
-
       <h3>💬 토론 및 댓글</h3>
       <div id="giscus-container">
         <p style="color: #8B95A1; font-size: 0.9em;">(댓글 기능 세팅 대기 중...)</p>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -130,9 +146,10 @@ document.addEventListener("DOMContentLoaded", function() {
   const postBody = document.querySelector('.post-body');
   if (!postBody) return;
 
-  // 1. 섹션 접기/펴기 기능
+  // 1. 완벽한 섹션 접기/펴기 (수식 잔상 해결)
   const toggleHeadings = postBody.querySelectorAll('h2, h3, h4');
   toggleHeadings.forEach(heading => {
+    heading.style.cursor = 'pointer';
     const icon = document.createElement('span');
     icon.className = 'section-toggle-icon';
     icon.textContent = '▼';
@@ -174,55 +191,118 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // MathJax 렌더링 후 레이아웃 재계산
+  // MathJax 렌더링 지연에 맞춘 강제 동기화 (수식 튀어나옴 방지)
   if (window.MathJax && MathJax.Hub) {
     MathJax.Hub.Queue(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); });
   }
+  setTimeout(function() { if (typeof window.syncFolding === 'function') window.syncFolding(); }, 1000);
 
-  // 2. 자동 플로팅 목차 (ToC) 생성
+  // 2. 드래그 가능한 스마트 플로팅 목차 (ToC)
   if (toggleHeadings.length > 0) {
     const wrapper = document.createElement('div');
     wrapper.id = 'toc-wrapper';
-    wrapper.innerHTML = `
-      <div class="toc-header">
-        <span class="toc-title">목차</span>
-        <div class="toc-header-btns">
-          <button class="toc-btn toc-toggle-btn" title="접기/펴기">—</button>
-        </div>
-      </div>
-      <div class="toc-body"><ul id="toc-list"></ul></div>
-    `;
+    const header = document.createElement('div');
+    header.className = 'toc-header';
+    header.innerHTML = `<span class="toc-title">목차</span><div class="toc-header-btns"><button class="toc-btn toc-reset-btn" title="맨 위로 고정">↺</button><button class="toc-btn toc-toggle-btn" title="접기/펴기">—</button></div>`;
     
-    const tocList = wrapper.querySelector('#toc-list');
+    const tocBody = document.createElement('div');
+    tocBody.className = 'toc-body';
+    const rootUl = document.createElement('ul');
+    let uls = { 2: rootUl }; let currentLevel = 2;
+    
     toggleHeadings.forEach((heading, index) => {
+      const level = parseInt(heading.tagName.substring(1));
       heading.id = heading.id || 'heading-' + index;
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = '#' + heading.id;
-      a.textContent = heading.textContent.replace('▼', '').trim();
+      a.textContent = heading.textContent.replace(/^[0-9.\s]+/, '').replace('▼', '').trim();
       
+      // 목차 클릭 시 닫힌 섹션 열면서 부드럽게 이동
       a.addEventListener('click', function(e) {
         e.preventDefault(); 
         heading.classList.remove('heading-collapsed');
+        let prevNode = heading.previousElementSibling;
+        let targetLevel = parseInt(heading.tagName.substring(1));
+        while (prevNode) {
+          if (prevNode.tagName && /^H[1-6]$/i.test(prevNode.tagName)) {
+            const prevLevel = parseInt(prevNode.tagName.substring(1));
+            if (prevLevel < targetLevel) {
+              prevNode.classList.remove('heading-collapsed');
+              targetLevel = prevLevel; 
+            }
+          }
+          prevNode = prevNode.previousElementSibling;
+        }
         syncFolding();
         heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, null, a.hash);
       });
 
-      li.style.marginLeft = (parseInt(heading.tagName[1]) - 2) * 15 + 'px';
       li.appendChild(a);
-      tocList.appendChild(li);
+      if (level > currentLevel) {
+        for (let i = currentLevel + 1; i <= level; i++) {
+          const newUl = document.createElement('ul');
+          const parentUl = uls[i - 1] || rootUl;
+          let parentLi = parentUl.lastElementChild || document.createElement('li');
+          if (!parentUl.lastElementChild) parentUl.appendChild(parentLi);
+          parentLi.appendChild(newUl);
+          uls[i] = newUl;
+        }
+      }
+      let targetUl = uls[level] || rootUl;
+      targetUl.appendChild(li);
+      currentLevel = level;
+      for (let i = level + 1; i <= 6; i++) uls[i] = null;
     });
     
+    tocBody.appendChild(rootUl);
+    wrapper.appendChild(header);
+    wrapper.appendChild(tocBody);
     document.body.appendChild(wrapper);
 
-    // 목차 접기 버튼 이벤트
-    wrapper.querySelector('.toc-toggle-btn').onclick = () => {
+    // 드래그 앤 드롭 이벤트
+    let xOffset = 0, yOffset = 0, isDragging = false, currentX, currentY, initialX, initialY;
+    const resetPos = () => { xOffset = 0; yOffset = 0; wrapper.style.transform = `translate3d(0, 0, 0)`; };
+
+    header.addEventListener("mousedown", dragStart);
+    document.addEventListener("mouseup", () => isDragging = false);
+    document.addEventListener("mousemove", drag);
+    header.addEventListener("touchstart", dragStart, {passive: true});
+    document.addEventListener("touchend", () => isDragging = false);
+    document.addEventListener("touchmove", drag, {passive: false});
+
+    function dragStart(e) {
+      if (e.target.closest('.toc-btn')) return;
+      initialX = (e.type === "touchstart" ? e.touches[0].clientX : e.clientX) - xOffset;
+      initialY = (e.type === "touchstart" ? e.touches[0].clientY : e.clientY) - yOffset;
+      if (!wrapper.classList.contains('folded')) isDragging = true;
+    }
+
+    function drag(e) {
+      if (isDragging && !wrapper.classList.contains('folded')) {
+        e.preventDefault();
+        currentX = (e.type === "touchmove" ? e.touches[0].clientX : e.clientX) - initialX;
+        currentY = (e.type === "touchmove" ? e.touches[0].clientY : e.clientY) - initialY;
+        const maxX = 30, minX = -(window.innerWidth - wrapper.offsetWidth - 30); 
+        const maxY = window.innerHeight - wrapper.offsetHeight - 80, minY = -80; 
+        if (currentX > maxX) currentX = maxX; if (currentX < minX) currentX = minX;
+        if (currentY > maxY) currentY = maxY; if (currentY < minY) currentY = minY;
+        xOffset = currentX; yOffset = currentY;
+        wrapper.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      }
+    }
+
+    header.querySelector('.toc-toggle-btn').onclick = () => {
       wrapper.classList.toggle('folded');
-      wrapper.querySelector('.toc-toggle-btn').textContent = wrapper.classList.contains('folded') ? '+' : '—';
+      const isFolded = wrapper.classList.contains('folded');
+      header.querySelector('.toc-toggle-btn').textContent = isFolded ? '+' : '—';
+      wrapper.style.transform = isFolded ? '' : `translate3d(${xOffset}px, ${yOffset}px, 0)`;
     };
+    header.querySelector('.toc-reset-btn').onclick = resetPos;
   }
 
-  // 3. 각주 팝업 (간략화)
+  // 3. 각주 팝업
   const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
   footnoteRefs.forEach(ref => {
     ref.addEventListener('click', e => {
@@ -230,13 +310,11 @@ document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll('.floating-footnote-content').forEach(el => el.remove());
       const targetId = ref.getAttribute('href').substring(1);
       const targetLi = document.getElementById(targetId);
-      
       if (targetLi) {
         const popup = document.createElement('div');
         popup.className = 'floating-footnote-content';
         popup.innerHTML = `<span class="footnote-close-btn">×</span><div class="footnote-inner-scroll">${targetLi.innerHTML}</div>`;
         popup.querySelector('.footnote-close-btn').onclick = () => popup.remove();
-        
         document.body.appendChild(popup);
         const rect = ref.getBoundingClientRect();
         popup.style.top = (rect.bottom + window.scrollY + 10) + 'px';
