@@ -1,58 +1,33 @@
 ---
 layout: default
-title: "벡터 미적분학: 발산 정리 (Divergence Theorem)"
+title: "fr0mhell's math stash"
 ---
 
-이 글은 GitHub Pages의 마크다운 변환 테스트를 위한 문서입니다.
+환영합니다! 이곳은 수학 개념들을 파편화된 메모가 아닌, 유기적으로 연결된 형태로 길러내는 **디지털 가든**입니다. 옵시디언(Obsidian)으로 작성된 노트들이 지속적으로 업데이트되고 가지를 뻗어나갑니다.
 
-## 1. 발산 정리의 개념
-발산 정리는 벡터장의 유량(Flux)과 그 발산(Divergence) 사이의 관계를 나타내는 아주 중요한 정리입니다. 닫힌 곡면을 통과하는 총 유량은 그 곡면이 둘러싼 부피 안에서 발생하는 벡터장의 발산의 총합과 같습니다.[^1]
+---
 
-$$\iint_{\partial V} \mathbf{F} \cdot d\mathbf{S} = \iiint_{V} (\nabla \cdot \mathbf{F}) \, dV$$
+## 🗺️ 개념 지도 (Map of Content)
 
-### 1.1 직관적 의미
-* **좌변:** 표면 $\partial V$를 뚫고 나가는 벡터장 $\mathbf{F}$의 알짜 유량
-* **우변:** 공간 $V$ 내부의 각 점에서 퍼져나가는 '발산'의 정도를 다 더한 것
+### 📐 벡터 미적분학 (Vector Calculus)
+선형대수학의 다변수 확장과 공간 상의 변환을 다룹니다.
+* [발산 정리 (Divergence Theorem)](divergence-theorem.html) - 현재 작성 완료된 테스트 문서
+* 스토크스 정리 (Stokes' Theorem) - *(작성 예정)*
+* 그린 정리 (Green's Theorem) - *(작성 예정)*
 
-## 2. 코드 블록 테스트
-이 기능은 나중에 커스텀 에디터를 만들 때 요긴하게 쓰입니다.[^2]
-```javascript
-function calculateDivergence(vectorField) {
-  console.log("발산 계산 완료");
-  return true;
-}
-```
+### 🧮 추상 선형대수학 (Abstract Linear Algebra)
+기하학적 직관을 넘어선 공리적 벡터 공간의 탐구입니다.
+* 벡터 공간과 부분 공간의 정의
+* 선형 변환과 행렬 표현
+* 고윳값과 대각화 (Eigenvalues & Diagonalization)
 
-## 333333
-ㄴㅁㅇㄴㅁㅇㄴㅇㅁㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴ [^3]
-## ㄴㅇㄴㅁㅇㄴ
-ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴ
-## ㄴㅁㅇ
+### ⚙️ 시스템 및 도구 세팅
+수학을 기록하고 공부하기 위한 리눅스 및 옵시디언 환경 설정입니다.
+* 리눅스 민트(Linux Mint) 한글 입력기 완벽 세팅
+* 옵시디언(Obsidian) LaTeX 자동 변환 플러그인 개발기
 
-$$\begin{align*}
-&\mathbb{N}  = \{ 1,2,3, \dots\}   \\
-&\mathbb{Z} = \{ -3,-2,-1 , 0 ,1,2,3, \dots \} \\ 
-& \mathbb{Q} = \left\{   \frac{n}{m} ~|~ n,m \in \mathbb{Z} , m \neq 0   \right \} \\
-\frac{\frac{\frac{\int}{\int_{\int}}}{\int \sum^{\int}_{ssss}}}{\int}
-\\ \frac{\int}{\int}
-\\ \int 
-\\ \int
-\\ \int
-\end{align*}$$
+---
 
-## ㅇㄴㅇㄴㅇㄴㅇ
-ㄴㅇㄴㅇㄴㅇㅁㄴㅇ
-ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇ
-
-$$
-\sum=\sum=f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-$$
-
-
-[^1]: 이 정리는 가우스의 정리(Gauss's Theorem)라고도 불리며, 전자기학에서 가우스 법칙을 적분형에서 미분형으로 변환할 때 필수적으로 사용됩니다.
-
-[^2]: 긴 그거 $$\sum=\sum=\sum=f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots$$
-
-[^3]: short $\sum^{a}_{b}$
+## 📌 최근 업데이트 노트
+* **2026. 03. 26:** 깃허브 페이지를 활용한 디지털 가든 구축 완료!
+* **2026. 03. 24:** 발산 정리의 직관적 의미와 수식 렌더링 테스트 추가.
