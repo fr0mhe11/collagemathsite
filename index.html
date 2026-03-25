@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Stash Test</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+      jax: ["input/TeX", "output/SVG"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+      },
+      SVG: { linebreaks: { automatic: true }, scale: 100 }
+    });
+  </script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_SVG"></script>
+
+  <style>
+    body, html { 
+      background: linear-gradient(180deg, #151619 0%, #0a0b0d 100%) !important; 
+      background-attachment: fixed !important;
+      color: #F2F4F6 !important; 
+      font-family: 'Pretendard', sans-serif !important;
+      margin: 0; padding: 0;
+    }
+    .centered { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    
+    .post-outer-container {
+      background: linear-gradient(145deg, #1e1f24 0%, #17181c 100%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      border-radius: 20px; 
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 30px 40px;
+    }
+
+    .post-body { line-height: 1.65; font-size: 16px; color: #E5E8EB; }
+    .post-body h1, .post-body h2, .post-body h3 { font-weight: 700; color: #F2F4F6; margin-top: 2em; }
+    .post-body h2 { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.4em; }
+    .post-body a { color: #3182F6; text-decoration: none; }
+    .post-body blockquote {
+      background: linear-gradient(135deg, #24262b 0%, #1e2024 100%);
+      padding: 18px 20px; border-left: 4px solid #3182F6;
+      border-radius: 12px; margin: 1.5em 0; color: #B0B8C1;
+    }
+    
+    /* MathJax 잔상 제거 및 정렬 */
+    .MathJax_Preview, .MJX_Assistive_MathML { display: none !important; }
+    .MathJax_SVG_Display { display: block !important; margin: 1.5em auto !important; text-align: center !important; }
+    
+    /* 플로팅 목차 (ToC) 스타일 */
+    #toc-wrapper {
+      position: fixed; top: 80px; right: 30px; width: 250px;
+      background: rgba(30, 31, 36, 0.8); backdrop-filter: blur(16px);
+      border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); z-index: 1000;
+    }
+    .toc-header { padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-weight: 700; }
+    .toc-body { padding: 16px; font-size: 0.9em; }
+    .toc-body ul { list-style: none; padding-left: 0; }
+    .toc-body li { margin-bottom: 8px; }
+    .toc-body a { color: #B0B8C1; text-decoration: none; }
+    .toc-body a:hover { color: #3182F6; }
+  </style>
+</head>
+<body>
+
+<div class="centered">
+  <div class="post-outer-container">
+    <div class="post-body">
+      <h1>벡터 공간과 선형 변환 테스트</h1>
+      
+      <h2 id="section1">1. 벡터 공간의 정의</h2>
+      <p>수학에서 <strong>벡터 공간(Vector Space)</strong>은 벡터라고 불리는 원소들의 집합으로, 벡터의 덧셈과 스칼라 곱이 정의되어 있으며 몇 가지 공리를 만족하는 공간입니다.</p>
+      
+      <blockquote>
+        "선형대수학의 본질은 기저를 찾고, 변환을 이해하는 것에 있다."
+      </blockquote>
+      
+      <h2 id="section2">2. 핵심 수식 렌더링 확인</h2>
+      <p>Stokes' Theorem(스토크스 정리)이 다크모드 위에서 어떻게 렌더링되는지 확인해 봅시다.</p>
+      
+      $$ \iint_{\Sigma} (\nabla \times \mathbf{F}) \cdot d\mathbf{S} = \oint_{\partial \Sigma} \mathbf{F} \cdot d\mathbf{r} $$
+      
+      <p>인라인 수식 테스트입니다. 임의의 $\epsilon > 0$에 대하여, 다음을 만족하는 $\delta > 0$가 존재합니다.</p>
+      
+      <h3 id="section3">2.1. 세부 개념</h3>
+      <p>여기는 목차(ToC) 스크립트가 h3 태그를 잘 잡아서 계층 구조를 만드는지 확인하는 용도의 텍스트입니다. 올려주신 스크립트가 잘 작동한다면 우측에 예쁜 목차가 생길 겁니다.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const postBody = document.querySelector('.post-body');
+    const headings = postBody.querySelectorAll('h2, h3, h4');
+    
+    if (headings.length > 0) {
+      const wrapper = document.createElement('div');
+      wrapper.id = 'toc-wrapper';
+      wrapper.innerHTML = `<div class="toc-header">목차</div><div class="toc-body"><ul id="toc-list"></ul></div>`;
+      document.body.appendChild(wrapper);
+      
+      const tocList = document.getElementById('toc-list');
+      headings.forEach((heading, index) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + heading.id;
+        a.textContent = heading.textContent;
+        li.style.marginLeft = (parseInt(heading.tagName[1]) - 2) * 15 + 'px';
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
