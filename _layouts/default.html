@@ -355,26 +355,72 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // 3. 각주 팝업
+  // 3. 각주 팝업 (테마 원본 로직 이식: ↩ 기호 강제 삭제 및 화면 이탈 방지)
   const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
   footnoteRefs.forEach(ref => {
     ref.addEventListener('click', e => {
       e.preventDefault(); 
-      document.querySelectorAll('.floating-footnote-content').forEach(el => el.remove());
+      const existingPopup = document.querySelector('.floating-footnote-content');
+      if (existingPopup) {
+        existingPopup.remove();
+        if (existingPopup.dataset.refId === ref.hash) return;
+      }
+      
       const targetId = ref.getAttribute('href').substring(1);
       const targetLi = document.getElementById(targetId);
+      
       if (targetLi) {
         const popup = document.createElement('div');
         popup.className = 'floating-footnote-content';
-        popup.innerHTML = `<span class="footnote-close-btn">×</span><div class="footnote-inner-scroll">${targetLi.innerHTML}</div>`;
-        popup.querySelector('.footnote-close-btn').onclick = () => popup.remove();
+        popup.dataset.refId = ref.hash;
+        
+        const innerScroll = document.createElement('div');
+        innerScroll.className = 'footnote-inner-scroll';
+        innerScroll.innerHTML = targetLi.innerHTML;
+        
+        // ⭐️ 핵심: '↩' (돌아가기 링크) 클래스를 찾아 강제 삭제
+        const backref = innerScroll.querySelector('a.footnote-backref, a[href^="#fnref"], a.reversefootnote');
+        if (backref) backref.remove();
+
+        const closeBtn = document.createElement('span');
+        closeBtn.innerHTML = '×';
+        closeBtn.className = 'footnote-close-btn';
+        closeBtn.onclick = () => popup.remove();
+        
+        popup.appendChild(closeBtn);
+        popup.appendChild(innerScroll);
         document.body.appendChild(popup);
+
         const rect = ref.getBoundingClientRect();
-        popup.style.top = (rect.bottom + window.scrollY + 10) + 'px';
-        popup.style.left = (rect.left + window.scrollX) + 'px';
+        const popupWidth = popup.offsetWidth;
+        const popupHeight = popup.offsetHeight; 
+        
+        let topPos = rect.bottom + window.scrollY + 10;
+        let leftPos = rect.left + window.scrollX;
+
+        // ⭐️ 핵심: 화면 밖으로 튀어나가지 않게 좌표 보정
+        if (leftPos + popupWidth > window.innerWidth - 15) { leftPos = window.innerWidth - popupWidth - 15; }
+        if (leftPos < 15) leftPos = 15;
+        if (rect.bottom + popupHeight + 15 > window.innerHeight) {
+          topPos = rect.top + window.scrollY - popupHeight - 10;
+          if (topPos < window.scrollY + 10) topPos = window.scrollY + 10;
+        }
+
+        popup.style.top = topPos + 'px';
+        popup.style.left = leftPos + 'px';
       }
     });
   });
-});
+
+  // 배경 빈 공간 클릭 시 각주 닫기
+  const closeFootnotePopup = function(e) {
+    if (!e.target.closest('.floating-footnote-content') && !e.target.closest('a[href^="#fn"]')) {
+      const existingPopup = document.querySelector('.floating-footnote-content');
+      if (existingPopup) existingPopup.remove();
+    }
+  };
+  document.addEventListener('click', closeFootnotePopup);
+  document.addEventListener('touchstart', closeFootnotePopup, { passive: true });
 </script>
 
 </body>
