@@ -24,7 +24,7 @@ function calculateDivergence(vectorField) {
 ```
 
 ## 333333
-ㄴㅁㅇㄴㅁㅇㄴㅇㅁㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴ[^3]
+ㄴㅁㅇㄴㅁㅇㄴㅇㅁㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴ [^3]
 ## ㄴㅇㄴㅁㅇㄴ
 ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴ
 ## ㄴㅁㅇ
@@ -46,8 +46,7 @@ $$\begin{align*}
 
 $$
 \sum=\sum=f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dotsf(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
 = f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
 $$
 
@@ -58,4 +57,5 @@ $$
 \sum=\sum=
 f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
 = f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots$$
+
 [^3]: short $\sum^{a}_{b}$
