@@ -46,7 +46,7 @@ $$\begin{align*}
 
 $$
 \sum=\sum=f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
-= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dotsf(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
 = f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
 $$
 
