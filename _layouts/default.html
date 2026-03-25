@@ -216,13 +216,21 @@
       <p class="profile-desc">Korea University Mathematics<br>Advanced Mathematics, Linux Mint, Obsidian</p>
       <a href="{{ site.baseurl }}/about.html" class="visit-profile">About Me</a>
     </div>
-
-    <div class="widget">
+<div class="widget">
       <h3 class="widget-title">📁 Categories</h3>
       <ul class="category-list">
-        <li><a href="/analysis/">해석학 (Analysis)</a></li>
-        <li><a href="/algebra/">추상선형대수학</a></li>
-        <li><a href="/dev/">환경 세팅 & 개발</a></li>
+        {% assign categories = "" | split: "" %}
+        {% for page in site.pages %}
+          {% if page.dir != "/" and page.dir != "/assets/" and page.dir != "/css/" %}
+            {% assign categories = categories | push: page.dir %}
+          {% endif %}
+        {% endfor %}
+        {% assign unique_categories = categories | uniq %}
+        
+        {% for category in unique_categories %}
+          {% assign cat_name = category | replace: "/", "" | capitalize %}
+          <li><a href="{{ site.baseurl }}{{ category }}">{{ cat_name }}</a></li>
+        {% endfor %}
       </ul>
     </div>
   </aside>
