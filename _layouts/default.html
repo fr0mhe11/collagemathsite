@@ -94,16 +94,18 @@
     #toc-wrapper.folded .toc-toggle-btn { color: #B0B8C1; font-size: 1.5em; width: 100%; height: 100%; padding: 0; }
 
     /* 모바일 팝업 각주 */
+  /* 모바일 팝업 각주 및 크기 최적화 (블로거 테마 원본 이식) */
     .floating-footnote-content {
       position: absolute; width: fit-content; min-width: 150px; max-width: calc(100vw - 30px); 
       background: linear-gradient(145deg, #202227 0%, #18191d 100%);
       border: 1px solid rgba(255, 255, 255, 0.08); border-left: 4px solid #3182F6; border-radius: 12px; 
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); z-index: 9999; animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
     }
-    .footnote-inner-scroll { max-height: 50vh; overflow-y: auto; padding: 16px 36px 16px 16px; font-size: 0.9em; color: #E5E8EB; }
-    .footnote-close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; color: #8B95A1; background: #202227; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; box-shadow: -2px 2px 6px rgba(0,0,0,0.2); z-index: 10;}
+    .footnote-inner-scroll { max-height: 50vh; overflow-y: auto; padding: 16px 36px 16px 16px; font-size: 0.9em; color: #E5E8EB; line-height: 1.6; }
+    .footnote-close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; color: #8B95A1; font-size: 1.2em; line-height: 1; transition: color 0.2s, background 0.2s; z-index: 10; background: #202227; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; box-shadow: -2px 2px 6px rgba(0,0,0,0.2); }
+    .footnote-close-btn:hover { color: #F2F4F6; background: rgba(255, 255, 255, 0.1); }
     @keyframes popIn { from { opacity: 0; transform: scale(0.95) translateX(-10px); } to { opacity: 1; transform: scale(1) translateX(0); } }
-    .footnotes { display: none !important; }
+    .footnotes { display: none !important; } /* 원본 리스트 텍스트 숨기기 */
 
     /* 구독 및 댓글창 */
     .interaction-box { background: linear-gradient(145deg, #18191d 0%, #121316 100%); border-radius: 16px; padding: 24px; margin-top: 40px; border: 1px solid rgba(255, 255, 255, 0.05); }
