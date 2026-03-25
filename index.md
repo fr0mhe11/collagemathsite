@@ -23,9 +23,9 @@ function calculateDivergence(vectorField) {
 }
 ```
 
-## ㄴㅁㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴㅁㅇ
+## 333333
 ㄴㅁㅇㄴㅁㅇㄴㅇㅁㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㅇㄴ[^3]
-## ㄴㅇㄴㅁㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴㅁㄴ
+## ㄴㅇㄴㅁㅇㄴ
 ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇㄴ
 ## ㄴㅁㅇ
 
@@ -44,7 +44,19 @@ $$\begin{align*}
 ㄴㅇㄴㅇㄴㅇㅁㄴㅇ
 ㄴㅇㄴㅇㄴㅇㄴㅇㄴㅇ
 
+$$
+\sum=\sum=f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+$$
+
+
 [^1]: 이 정리는 가우스의 정리(Gauss's Theorem)라고도 불리며, 전자기학에서 가우스 법칙을 적분형에서 미분형으로 변환할 때 필수적으로 사용됩니다.
 
-[^2]: 긴 그거 $\sum$ $$\begin{align*}&\mathbb{N}  = \{ 1,2,3, \dots\}   \\&\mathbb{Z} = \{ -3,-2,-1 , 0 ,1,2,3, \dots \} \\ & \mathbb{Q} = \left\{   \frac{n}{m} ~|~ n,m \in \mathbb{Z} , m \neq 0   \right \} \\\frac{\frac{\frac{\int}{\int_{\int}}}{\int \sum^{\int}_{ssss}}}{\int}\\ \frac{\int}{\int}\\ \int \\ \int\\ \int\end{align*}$$
+[^2]: 긴 그거 $$\sum=
+\sum=\sum=
+f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+= f(x + h) = f(x) + f'(x)h + f''(x) \frac{h^{2}}{2!} + \dots
+$$
 [^3]: short $\sum^{a}_{b}$
