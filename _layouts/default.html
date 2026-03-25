@@ -163,10 +163,95 @@
         right: 20px !important;
       }
     }
+
+
+/* === 2단 레이아웃 (메인 + 사이드바) === */
+    .page-wrapper { display: flex; gap: 30px; max-width: 1100px; margin: 40px auto; padding: 0 20px; align-items: flex-start; }
+    .main-content { flex: 1; min-width: 0; }
+    .sidebar-wrapper { width: 280px; flex-shrink: 0; position: sticky; top: 40px; }
+
+    /* 사이드바 위젯 공통 */
+    .widget {
+      background: linear-gradient(145deg, rgba(30, 31, 36, 0.9) 0%, rgba(23, 24, 28, 0.9) 100%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 24px; margin-bottom: 24px;
+    }
+    .widget .widget-title { color: #F2F4F6; font-size: 1.1em; margin-top: 0; margin-bottom: 16px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
+
+    /* 프로필 위젯 */
+    .widget.Profile { text-align: center; }
+    .profile-img { width: 90px; height: 90px; border-radius: 35%; object-fit: cover; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1); }
+    .profile-name { font-size: 1.2em; font-weight: 700; color: #F2F4F6; margin: 0 0 8px 0; }
+    .profile-desc { font-size: 0.9em; color: #B0B8C1; margin-bottom: 16px; line-height: 1.5; }
+    .visit-profile { display: inline-block; padding: 8px 16px; border: 1px solid #3182F6; color: #3182F6; border-radius: 12px; font-size: 0.9em; transition: all 0.2s; text-decoration: none; }
+    .visit-profile:hover { background: #3182F6; color: #fff; }
+
+    /* 카테고리 (폴더) 목록 */
+    .category-list { list-style: none; padding: 0; margin: 0; text-align: left; }
+    .category-list li { margin-bottom: 10px; }
+    .category-list a { color: #B0B8C1; text-decoration: none; transition: color 0.2s; display: block; font-size: 0.95em; }
+    .category-list a:hover { color: #3182F6; }
+
+    /* 모바일에서는 1단으로 합치기 */
+    @media (max-width: 800px) {
+      .page-wrapper { flex-direction: column; margin: 10px auto; }
+      .sidebar-wrapper { width: 100%; position: static; }
+    }
+
+
+
+    
     
   </style>
 </head>
 <body>
+
+  <div class="page-wrapper">
+  
+  <aside class="sidebar-wrapper">
+    <div class="widget Profile">
+      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="profile-img" alt="profile">
+      <h3 class="profile-name">Eugene Kang</h3>
+      <p class="profile-desc">Korea University Mathematics<br>Advanced Mathematics, Linux Mint, Obsidian</p>
+      <a href="/about.html" class="visit-profile">About Me</a>
+    </div>
+
+    <div class="widget">
+      <h3 class="widget-title">📁 Categories</h3>
+      <ul class="category-list">
+        <li><a href="/analysis/">해석학 (Analysis)</a></li>
+        <li><a href="/algebra/">추상선형대수학</a></li>
+        <li><a href="/dev/">환경 세팅 & 개발</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="post-outer-container">
+      <a href="/" class="site-title">fr0mhell's math stash</a>
+      <h1 class="post-title">{{ page.title }}</h1>
+      
+      <div class="post-body">
+        {{ content }}
+      </div>
+
+      <div class="interaction-box">
+        <h3>💬 토론 및 댓글</h3>
+        <div id="cusdis_thread"
+          data-host="https://cusdis.com"
+          data-app-id="YOUR_APP_ID"
+          data-page-id="{{ page.url }}"
+          data-page-url="{{ site.url }}{{ page.url }}"
+          data-page-title="{{ page.title }}"
+          data-theme="dark">
+        </div>
+        <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+      </div>
+    </div>
+  </main>
+
+</div>
 
 <div class="centered">
   <div class="post-outer-container">
