@@ -652,6 +652,81 @@ document.addEventListener("DOMContentLoaded", function() {
   };
   document.addEventListener('click', closeFootnotePopup);
   document.addEventListener('touchstart', closeFootnotePopup, { passive: true });
+
+// ==========================================
+  // 옵시디언 풍 마크다운 (OFM) 통합 파서
+  // ==========================================
+  const walkDOM = (node) => {
+    if (node.nodeType === 3) { // 텍스트 노드만 안전하게 추출
+      let text = node.nodeValue;
+      let modified = false;
+
+      // 1. 숨은 주석 (%% comment %%) -> 화면에서 완전히 삭제
+      if (/%%(.*?)%%/.test(text)) {
+        text = text.replace(/%%(.*?)%%/g, '');
+        modified = true;
+      }
+
+      // 2. 형광펜 (==highlight==)
+      if (/==([^=]+)==/.test(text)) {
+        text = text.replace(/==([^=]+)==/g, '<mark style="background: rgba(245, 166, 35, 0.3); color: var(--text-main); padding: 0 4px; border-radius: 4px;">$1</mark>');
+        modified = true;
+      }
+
+      // 3. 해시태그 (#tag) - 숫자만 있는 것은 제외
+      if (/(^|\s)#([a-zA-Z가-힣_]+[a-zA-Z가-힣0-9_]*)/.test(text)) {
+        text = text.replace(/(^|\s)#([a-zA-Z가-힣_]+[a-zA-Z가-힣0-9_]*)/g, '$1<a href="/collagemathsite/tags/$2" style="color: var(--accent); background: rgba(49, 130, 246, 0.1); padding: 2px 8px; border-radius: 12px; font-size: 0.9em; text-decoration: none;">#$2</a>');
+        modified = true;
+      }
+
+      // 4. 위키링크 ([[Page]] 또는 [[Page|Alias]])
+      if (/\[\[(.*?)\]\]/.test(text)) {
+        text = text.replace(/\[\[(.*?)\]\]/g, (match, p1) => {
+          const parts = p1.split('|');
+          const linkTarget = parts[0].trim();
+          const displayName = parts[1] ? parts[1].trim() : linkTarget;
+          const urlFormat = linkTarget.replace(/\s+/g, '%20');
+          return `<a href="/collagemathsite/${urlFormat}" style="color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); transition: opacity 0.2s;">🔗${displayName}</a>`;
+        });
+        modified = true;
+      }
+
+      // 5. 체크박스 작업 목록 (- [ ] 또는 - [x])
+      if (/^\s*\[([ xX])\]\s+/.test(text)) {
+        text = text.replace(/^\s*\[([ xX])\]\s+/g, (match, p1) => {
+          const isChecked = p1.toLowerCase() === 'x' ? 'checked' : '';
+          return `<input type="checkbox" disabled ${isChecked} style="margin-right: 8px; transform: scale(1.2);">`;
+        });
+        modified = true;
+        // 체크박스가 있는 줄의 부모 요소(li) 스타일 리셋
+        if (node.parentNode && node.parentNode.tagName === 'LI') {
+          node.parentNode.style.listStyle = 'none';
+          node.parentNode.style.marginLeft = '-1.5em';
+        }
+      }
+
+      if (modified) {
+        const span = document.createElement('span');
+        span.innerHTML = text;
+        node.parentNode.replaceChild(span, node);
+      }
+    } else if (
+      node.nodeType === 1 && 
+      !['SCRIPT', 'STYLE', 'PRE', 'CODE'].includes(node.nodeName) && 
+      !node.classList.contains('MathJax')
+    ) {
+      Array.from(node.childNodes).forEach(walkDOM);
+    }
+  };
+
+  const postBody = document.querySelector('.post-body');
+  if (postBody) {
+    walkDOM(postBody);
+  }
+
+
+
+  
 });
 </script>
 
