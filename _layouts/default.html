@@ -58,7 +58,8 @@
       border-color: var(--accent);
     }
     .menu-icon { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .hamburger-btn.active .menu-icon { transform: rotate(90deg); }
+    /* ⭐️ 사이드바 열릴 때 메뉴 버튼 숨기기 설정 */
+    .hamburger-btn.hidden { opacity: 0; pointer-events: none; transform: translateY(-10px); }
     
     /* === 사이드바 === */
     .sidebar-wrapper {
@@ -80,7 +81,7 @@
     .visit-profile { display: inline-block; padding: 8px 18px; border: 1px solid var(--accent); color: var(--accent); border-radius: 20px; text-decoration: none; font-size: 0.9em; transition: all 0.2s; margin-top: 10px; font-weight: 600;}
     .visit-profile:hover { background: var(--accent); color: #fff; box-shadow: 0 0 12px rgba(49, 130, 246, 0.4); }
 
-    /* === ⭐️ 개선된 로컬 검색창 === */
+    /* === 로컬 검색창 === */
     #local-search-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white; font-family: inherit; font-size: 0.95em; outline: none; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s; }
     #local-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.2); }
     #local-search-results { padding: 0; margin: 15px 0 0 0; list-style: none; max-height: 280px; overflow-y: auto; }
@@ -180,12 +181,13 @@
     #toc-wrapper.folded .toc-header-btns { gap: 0; width: 100%; height: 100%; justify-content: center; pointer-events: none;}
     #toc-wrapper.folded .toc-toggle-btn { color: #fff; font-size: 1.8em; width: 100%; height: 100%; padding: 0; }
 
-    /* === 모바일 팝업 각주 === */
+    /* === 모바일 팝업 각주 (개선됨) === */
     .floating-footnote-content {
-      position: absolute; width: fit-content; min-width: 200px; max-width: calc(100vw - 40px); 
+      position: absolute; width: fit-content; min-width: 250px; max-width: calc(100vw - 40px); /* 화면 크기에 맞게 조정 */
       background: rgba(28, 29, 34, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--glass-border); border-left: 4px solid var(--accent); border-radius: 12px; 
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6); z-index: 9999; animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
+      box-sizing: border-box; /* 패딩 포함 계산 */
     }
     .footnote-inner-scroll { max-height: 50vh; overflow-y: auto; padding: 18px 40px 18px 20px; font-size: 0.9em; color: #E5E8EB; line-height: 1.6; }
     .footnote-close-btn { position: absolute; top: 14px; right: 14px; cursor: pointer; color: var(--text-muted); font-size: 1.2em; line-height: 1; transition: all 0.2s; z-index: 10; background: rgba(0,0,0,0.3); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
@@ -352,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ==========================================
-  // 3. 햄버거 메뉴 및 사이드바 슬라이드 (애니메이션 동기화)
+  // 3. 햄버거 메뉴 및 사이드바 슬라이드 (애니메이션 동기화 및 버튼 숨김)
   // ==========================================
   const sidebar = document.querySelector('.sidebar-wrapper');
   const toggleBtn = document.getElementById('sidebar-toggle-btn');
@@ -363,13 +365,13 @@ document.addEventListener("DOMContentLoaded", function() {
   if(toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       sidebar.classList.add('open');
-      toggleBtn.classList.add('active');
+      toggleBtn.classList.add('hidden'); // 메뉴 버튼 숨기기
       overlay.classList.add('show');
     });
   }
   overlay.addEventListener('click', () => {
     sidebar.classList.remove('open');
-    toggleBtn.classList.remove('active');
+    if(toggleBtn) toggleBtn.classList.remove('hidden'); // 메뉴 버튼 다시 표시
     overlay.classList.remove('show');
   });
 
@@ -588,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ==========================================
-  // 7. 모바일 팝업 각주
+  // 7. 모바일 팝업 각주 (위치 및 범위 개선)
   // ==========================================
   const footnoteRefs = document.querySelectorAll('.post-body a[href^="#fn"]');
   footnoteRefs.forEach(ref => {
@@ -624,15 +626,24 @@ document.addEventListener("DOMContentLoaded", function() {
         popup.appendChild(innerScroll);
         document.body.appendChild(popup);
 
+        // 팝업 렌더링 후 크기 측정 (강제 레이아웃 발생시켜 정확도 향상)
         const rect = ref.getBoundingClientRect();
-        const popupWidth = popup.offsetWidth || 250;
-        const popupHeight = popup.offsetHeight || 100; 
+        const popupWidth = popup.offsetWidth;
+        const popupHeight = popup.offsetHeight; 
         
         let topPos = rect.bottom + window.scrollY + 10;
         let leftPos = rect.left + window.scrollX;
 
-        if (leftPos + popupWidth > window.innerWidth - 15) { leftPos = window.innerWidth - popupWidth - 15; }
-        if (leftPos < 15) leftPos = 15;
+        // 화면 우측을 벗어날 경우 20px 여백 확보
+        if (leftPos + popupWidth > window.innerWidth - 20) { 
+            leftPos = window.innerWidth - popupWidth - 20; 
+        }
+        // 화면 좌측을 벗어날 경우 20px 여백 확보 (우측 보정 후에도 음수일 수 있으므로)
+        if (leftPos < 20) {
+            leftPos = 20; 
+        }
+
+        // 팝업이 화면 아래를 벗어날 경우 위로 올리기
         if (rect.bottom + popupHeight + 15 > window.innerHeight) {
           topPos = rect.top + window.scrollY - popupHeight - 10;
           if (topPos < window.scrollY + 10) topPos = window.scrollY + 10;
@@ -653,33 +664,26 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener('click', closeFootnotePopup);
   document.addEventListener('touchstart', closeFootnotePopup, { passive: true });
 
-// ==========================================
-  // 옵시디언 풍 마크다운 (OFM) 통합 파서
+  // ==========================================
+  // 8. 옵시디언 풍 마크다운 (OFM) 통합 파서
   // ==========================================
   const walkDOM = (node) => {
-    if (node.nodeType === 3) { // 텍스트 노드만 안전하게 추출
+    if (node.nodeType === 3) { 
       let text = node.nodeValue;
       let modified = false;
 
-      // 1. 숨은 주석 (%% comment %%) -> 화면에서 완전히 삭제
       if (/%%(.*?)%%/.test(text)) {
         text = text.replace(/%%(.*?)%%/g, '');
         modified = true;
       }
-
-      // 2. 형광펜 (==highlight==)
       if (/==([^=]+)==/.test(text)) {
         text = text.replace(/==([^=]+)==/g, '<mark style="background: rgba(245, 166, 35, 0.3); color: var(--text-main); padding: 0 4px; border-radius: 4px;">$1</mark>');
         modified = true;
       }
-
-      // 3. 해시태그 (#tag) - 숫자만 있는 것은 제외
       if (/(^|\s)#([a-zA-Z가-힣_]+[a-zA-Z가-힣0-9_]*)/.test(text)) {
         text = text.replace(/(^|\s)#([a-zA-Z가-힣_]+[a-zA-Z가-힣0-9_]*)/g, '$1<a href="/collagemathsite/tags/$2" style="color: var(--accent); background: rgba(49, 130, 246, 0.1); padding: 2px 8px; border-radius: 12px; font-size: 0.9em; text-decoration: none;">#$2</a>');
         modified = true;
       }
-
-      // 4. 위키링크 ([[Page]] 또는 [[Page|Alias]])
       if (/\[\[(.*?)\]\]/.test(text)) {
         text = text.replace(/\[\[(.*?)\]\]/g, (match, p1) => {
           const parts = p1.split('|');
@@ -690,15 +694,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         modified = true;
       }
-
-      // 5. 체크박스 작업 목록 (- [ ] 또는 - [x])
       if (/^\s*\[([ xX])\]\s+/.test(text)) {
         text = text.replace(/^\s*\[([ xX])\]\s+/g, (match, p1) => {
           const isChecked = p1.toLowerCase() === 'x' ? 'checked' : '';
           return `<input type="checkbox" disabled ${isChecked} style="margin-right: 8px; transform: scale(1.2);">`;
         });
         modified = true;
-        // 체크박스가 있는 줄의 부모 요소(li) 스타일 리셋
         if (node.parentNode && node.parentNode.tagName === 'LI') {
           node.parentNode.style.listStyle = 'none';
           node.parentNode.style.marginLeft = '-1.5em';
@@ -713,20 +714,18 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if (
       node.nodeType === 1 && 
       !['SCRIPT', 'STYLE', 'PRE', 'CODE'].includes(node.nodeName) && 
-      !node.classList.contains('MathJax')
+      !node.classList.contains('MathJax') &&
+      !node.classList.contains('MathJax_SVG')
     ) {
       Array.from(node.childNodes).forEach(walkDOM);
     }
   };
 
-  const postBody = document.querySelector('.post-body');
-  if (postBody) {
-    walkDOM(postBody);
+  const ofmContainer = document.querySelector('.post-body');
+  if (ofmContainer) {
+    walkDOM(ofmContainer);
   }
 
-
-
-  
 });
 </script>
 
